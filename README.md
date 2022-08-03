@@ -59,3 +59,20 @@ All the required information of each layer is stored inside a ```model``` struct
         - ```wl_exp``` wavelenth in nm
         - ```n``` real part of the refractive index
         - ```k``` imaginary part of the refractive index
+  - Unknown layers
+  
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
