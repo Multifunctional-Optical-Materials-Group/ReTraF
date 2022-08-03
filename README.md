@@ -44,8 +44,18 @@ All the required information of each layer is stored inside a ```model``` struct
       - ```model.A``` vector with real Cauchy parameters ```[ A1 , A2 , A3 , A4 , A5 , A6 ]```
       - ```model.D``` layer thickness in nm
     - Linear refractive index gradient
-      - ```model.type = lin-grad```
+      - ```model.type = "lin-grad"```
       - ```model.n1``` refractive index of the first layer
       - ```model.n2``` refractive index of the last layer
       - ```model.nlayers``` number of layers
-      - ```model.D``` total tickness in nm 
+      - ```model.D``` total tickness in nm
+    - Constant refractive index
+      - ```model.type = "cnst"```
+      - ```model.n0``` refractive index
+      - ```model.D``` layer thickness in nm
+    - Load from .mat file
+      - ```model.type = "file"
+      - ```model.filename``` full path to the nk .mat file. The variables inside this file must be:
+        - ```wl_exp``` wavelenth in nm
+        - ```n``` real part of the refractive index
+        - ```k``` imaginary part of the refractive index
