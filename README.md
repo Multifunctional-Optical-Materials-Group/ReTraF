@@ -51,7 +51,7 @@ All the required information of each layer is stored inside a ```model``` struct
       - ```model.D``` total tickness in nm
     - Constant refractive index
       - ```model.type = "cnst"```
-      - ```model.n0``` refractive index
+      - ```model.n``` refractive index
       - ```model.D``` layer thickness in nm
     - Load from .mat file
       - ```model.type = "file"```
@@ -97,8 +97,8 @@ All the required information of each layer is stored inside a ```model``` struct
         - ```model.u_D``` upper bound for the total tickness in nm
       - Constant refractive index
         - ```model.type = "U-cnst"```
-        - ```model.l_n0``` lower bound for the refractive index
-        - ```model.u_n0``` upper bound for the refractive index
+        - ```model.l_n``` lower bound for the refractive index
+        - ```model.u_n``` upper bound for the refractive index
         - ```model.l_D```  lower bound for the layer thickness in nm
         - ```model.u_D```  upper bound for the layer thickness in nn
 
