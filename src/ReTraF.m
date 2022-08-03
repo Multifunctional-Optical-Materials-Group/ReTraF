@@ -20,6 +20,19 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
 
     if isempty(data_file)
         onlyplot = true;
+        fit_type = "R&T";
+        Rexp = [];
+        Texp = [];
+        Rexp_P = [];
+        Rexp_S = [];
+        Texp_P = [];
+        Texp_S = [];
+        Data_exp.Rexp = Rexp;
+        Data_exp.Rexp_P = Rexp_P;
+        Data_exp.Rexp_S = Rexp_S;
+        Data_exp.Texp = Texp;
+        Data_exp.Texp_P = Texp_P;
+        Data_exp.Texp_S = Texp_S;
     else
         aux = load(data_file);
         
