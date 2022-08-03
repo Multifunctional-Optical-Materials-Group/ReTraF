@@ -2,5 +2,7 @@
 Reflectance and Transmittance fitter for arbitrary layered optical systems
 
 
-# **Usage**:
+## **Usage**:
+
+'''ReTraF''' function needs the folowing input arguments:
 
