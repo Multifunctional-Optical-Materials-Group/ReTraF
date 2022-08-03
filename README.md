@@ -114,7 +114,7 @@ Once all the models are properly defined, they must be packed in a cell array: `
 - ```foptions.poppize``` genetic algorithm population size.
 - ```foptions.parallel``` use Matlab parallelization (true or false).
 - ```foptions.lcoher``` coherence length (```1e4``` is recommended).
-- ```foptions.scatt``` apply scattering correction (only for R&T data and for non-absorbing media).
+- ```foptions.scatt``` apply scattering correction (only for R&T of non-absorbing media).
   
         
         
