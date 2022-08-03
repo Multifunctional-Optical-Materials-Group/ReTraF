@@ -54,7 +54,7 @@ All the required information of each layer is stored inside a ```model``` struct
       - ```model.n0``` refractive index
       - ```model.D``` layer thickness in nm
     - Load from .mat file
-      - ```model.type = "file"
+      - ```model.type = "file"```
       - ```model.filename``` full path to the nk .mat file. The variables inside this file must be:
         - ```wl_exp``` wavelenth in nm
         - ```n``` real part of the refractive index
