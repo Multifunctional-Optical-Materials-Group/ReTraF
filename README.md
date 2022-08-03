@@ -1,6 +1,8 @@
 # ReTraF
 Reflectance and Transmittance fitter for arbitrary layered optical systems
 
+## **Instalation**:
+Add ```src``` folder to Matlab path.
 
 ## **Usage**:
 ReTraF fuction call takes the following form:
