@@ -106,8 +106,8 @@ Once all the models are properly defined, they must be packed in a cell array: `
 
 ### Options struct:
 - ```foptions.method```
-  - ```"fmincon``` use Matlab ```fmincon``` minimization.
-  - ```genetic``` use Matlab genetic algorithm minimization.
+  - ```"fmincon"``` use Matlab ```fmincon``` minimization.
+  - ```"genetic"``` use Matlab genetic algorithm minimization.
 
 
 - ```foptions.itermax``` maximum number of iterations.
