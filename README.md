@@ -25,4 +25,7 @@ Reflectance and transmittance variables are matrices of dimension ```(m x n)``` 
  - ```foptions``` options struct.
 
 ### Models struct:
-
+All the required information of each layer is stored inside a ```model``` struct. We make a distinction between known layers and unknown layers.
+  - Known layers:
+    - Forouhi-Bloomer model (max. 4 oscillators):
+      - ```model.type = "Fh-1"```
