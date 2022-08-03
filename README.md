@@ -100,7 +100,8 @@ All the required information of each layer is stored inside a ```model``` struct
         - ```model.l_n0``` lower bound for the refractive index
         - ```model.u_n0``` upper bound for the refractive index
         - ```model.l_D```  lower bound for the layer thickness in nm
-        - ```model.u_D```  upper bound for the layer thickness in nm
+        - ```model.u_D```  upper bound for the layer thickness in nn
+
 Once are the models are properly defined, they must be packeted in a cell array: ```models = {model_1 model_2 model_3 model_4}```.
 
   
