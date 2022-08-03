@@ -15,6 +15,7 @@ where the input arguments are:
   - ```RSample_P``` reflectance (in %) for P polarization
   - ```TSample_S``` transmittance (in %) for S polarization
   - ```TSample_S``` transmittance (in %) for P polarization
+
 Reflectance and transmittance variables are matrices of dimension ```(m x n)``` where ```m``` is the number of measured wavelengths and ```n``` is the number of measurements for different incident angles.
 - ```wl``` wavelength (in nm) vector
 - ```theta``` incident angles struct:
