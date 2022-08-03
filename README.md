@@ -102,8 +102,17 @@ All the required information of each layer is stored inside a ```model``` struct
         - ```model.l_D```  lower bound for the layer thickness in nm
         - ```model.u_D```  upper bound for the layer thickness in nn
 
-Once are the models are properly defined, they must be packeted in a cell array: ```models = {model_1 model_2 model_3 model_4}```.
+Once all the models are properly defined, they must be packed in a cell array: ```models = {model_1 model_2 model_3 model_4}```.
 
+### Options struct:
+-```foptions.method```
+  - ```"fmincon``` use Matlab ```fmincon``` minimization.
+  - ```genetic``` use Matlab genetic algorithm minimization.
+- ```foptions.itermax``` maximum number of iterations.
+- ```foptions.poppize``` genetic algorithm population size.
+- ```foptions.parallel``` use Matlab parallelization (true or false).
+- ```foptions.lcoher``` coherence length (```1e4``` is recommended).
+- ```foptions.scatt``` apply scattering correction (only for R&T data and for non-absorbing media).
   
         
         
