@@ -105,9 +105,9 @@ All the required information of each layer is stored inside a ```model``` struct
 Once all the models are properly defined, they must be packed in a cell array: ```models = {model_1 model_2 model_3 model_4}```.
 
 ### Options struct:
--```foptions.method```
-    - ```"fmincon``` use Matlab ```fmincon``` minimization.
-    - ```genetic``` use Matlab genetic algorithm minimization.
+- ```foptions.method```
+  - ```"fmincon``` use Matlab ```fmincon``` minimization.
+  - ```genetic``` use Matlab genetic algorithm minimization.
 
 
 - ```foptions.itermax``` maximum number of iterations.
