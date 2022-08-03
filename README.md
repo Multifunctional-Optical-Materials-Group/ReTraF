@@ -28,11 +28,11 @@ Reflectance and transmittance variables are matrices of dimension ```(m x n)``` 
 All the required information of each layer is stored inside a ```model``` struct. We make a distinction between known layers and unknown layers.
   - Known layers:
     - Forouhi-Bloomer model (max. 4 oscillators):
-      - ```model.type = "Fh-1"``` or ```model.type = "Fh-1"``` or ```model.type = "Fh-2"``` or ```model.type = "Fh-3"``` or ```model.type = "Fh-4"```
+      - ```model.type = "Fh-1"``` or ```model.type = "Fh-2"``` or ```model.type = "Fh-3"``` or ```model.type = "Fh-4"```
       - ```model.Eg``` Bandgap in Ev
       - ```model.n0``` low frequency refractive index
       - ```model.fi``` fi parameter (length shoul be equal to the number of oscillators)
-      - ```model.fi``` Ei parameter (length shoul be equal to the number of oscillators)
+      - ```model.Ei``` Ei parameter (length shoul be equal to the number of oscillators)
       - ```model.Gi``` Gi parameter (length shoul be equal to the number of oscillators)
       - ```model.D``` layer thickness in nm
     - Real Cauchy model
@@ -60,6 +60,48 @@ All the required information of each layer is stored inside a ```model``` struct
         - ```n``` real part of the refractive index
         - ```k``` imaginary part of the refractive index
   - Unknown layers
+      - Forouhi-Bloomer model (max. 4 oscillators):
+        - ```model.type = "U-Fh-1"``` or ```model.type = "U-Fh-2"``` or ```model.type = "U-Fh-3"``` or ```model.type = "U-Fh-4"```
+        - ```model.l_Eg``` lower bound for the bandgap in Ev
+        - ```model.u_Eg``` upper bound for the bandgap in Ev
+        - ```model.l_n0``` lower bound for the low frequency refractive index
+        - ```model.u_n0``` upper bound for the low frequency refractive index
+        - ```model.l_fi``` lower bound for the fi parameter (length shoul be equal to the number of oscillators)
+        - ```model.u_fi``` upper bound for the fi parameter (length shoul be equal to the number of oscillators)
+        - ```model.l_Ei``` lower bound for the Ei parameter (length shoul be equal to the number of oscillators)
+        - ```model.u_Ei``` upper bound for the Ei parameter (length shoul be equal to the number of oscillators)
+        - ```model.l_Gi``` lower bound for the Gi parameter (length shoul be equal to the number of oscillators)
+        - ```model.u_Gi``` upper bound for the Gi parameter (length shoul be equal to the number of oscillators)
+        - ```model.l_D```  lower bound for the layer thickness in nm
+        - ```model.u_D```  upper bound for the layer thickness in nm
+      - Real Cauchy model
+        - ```model.type = "U-Ch-n"```
+        - ```model.l_A```  lower bound for the vector with real Cauchy parameters ```[ A1 , A2 , A3 ]```
+        - ```model.u_A```  upper bound for the vector with real Cauchy parameters ```[ A1 , A2 , A3 ]```
+        - ```model.l_D```  lower bound for the layer thickness in nm
+        - ```model.u_D```  layer thickness in nm
+      - Complex Cauchy model
+        - ```model.type = "U-Ch-nk"```
+        - ```model.l_A```  lower bound for the vector with complex Cauchy parameters ```[ A1 , A2 , A3 , A4 , A5 , A6 ]```
+        - ```model.u_A```  upper bound for the vector with complex Cauchy parameters ```[ A1 , A2 , A3 , A4 , A5 , A6 ]```
+        - ```model.l_D```  lower bound for the layer thickness in nm
+        - ```model.u_D```  upper bound for the layer thickness in nm
+      - Linear refractive index gradient
+        - ```model.type = "U-lin-grad"```
+        - ```model.l_n1``` lower bound for the refractive index of the first layer
+        - ```model.u_n1``` upper bound for the refractive index of the first layer
+        - ```model.l_n2``` lower bound for the refractive index of the last layer
+        - ```model.u_n2``` upper bound for the refractive index of the last layer
+        - ```model.nlayers``` number of layers
+        - ```model.l_D``` lower bound for the total tickness in nm
+        - ```model.u_D``` upper bound for the total tickness in nm
+      - Constant refractive index
+        - ```model.type = "U-cnst"```
+        - ```model.l_n0``` lower bound for the refractive index
+        - ```model.u_n0``` upper bound for the refractive index
+        - ```model.l_D```  lower bound for the layer thickness in nm
+        - ```model.u_D```  upper bound for the layer thickness in nm
+
   
         
         
