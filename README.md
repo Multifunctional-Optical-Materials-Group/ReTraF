@@ -9,6 +9,6 @@ ReTraF fuction call takes the following form:
 ```
 where the input arguments are:
 -```data_file``` full path to .mat file containing Reflectance and Transmitance data to fit. Variables inside this file must be:
---aa
+- aa
 - ```wl``` wavelength (in nm) vector
 - ```theta```
