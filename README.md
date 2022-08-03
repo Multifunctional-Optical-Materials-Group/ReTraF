@@ -35,5 +35,17 @@ All the required information of each layer is stored inside a ```model``` struct
       - ```model.fi``` Ei parameter (length shoul be equal to the number of oscillators)
       - ```model.Gi``` Gi parameter (length shoul be equal to the number of oscillators)
       - ```model.D``` layer thickness in nm
-    - Real Caucy model
+    - Real Cauchy model
       - ```model.type = "Ch-n"```
+      - ```model.A``` vector with real Cauchy parameters ```[ A1 , A2 , A3 ]```
+      - ```model.D``` layer thickness in nm
+    - Complex Cauchy model
+      - ```model.type = "Ch-nk"```
+      - ```model.A``` vector with real Cauchy parameters ```[ A1 , A2 , A3 , A4 , A5 , A6 ]```
+      - ```model.D``` layer thickness in nm
+    - Linear refractive index gradient
+      - ```model.type = lin-grad```
+      - ```model.n1``` refractive index of the first layer
+      - ```model.n2``` refractive index of the last layer
+      - ```model.nlayers``` number of layers
+      - ```model.D``` total tickness in nm 
