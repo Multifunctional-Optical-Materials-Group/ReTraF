@@ -33,9 +33,9 @@ All the required information of each layer is stored inside a ```model``` struct
       - ```model.type = "Fh-1"``` or ```model.type = "Fh-2"``` or ```model.type = "Fh-3"``` or ```model.type = "Fh-4"```
       - ```model.Eg``` Bandgap in Ev
       - ```model.n0``` low frequency refractive index
-      - ```model.fi``` fi parameter (length shoul be equal to the number of oscillators)
-      - ```model.Ei``` Ei parameter (length shoul be equal to the number of oscillators)
-      - ```model.Gi``` Gi parameter (length shoul be equal to the number of oscillators)
+      - ```model.fi``` fi parameter (length should be equal to the number of oscillators)
+      - ```model.Ei``` Ei parameter (length should be equal to the number of oscillators)
+      - ```model.Gi``` Gi parameter (length should be equal to the number of oscillators)
       - ```model.D``` layer thickness in nm
     - Real Cauchy model
       - ```model.type = "Ch-n"```
@@ -68,12 +68,12 @@ All the required information of each layer is stored inside a ```model``` struct
         - ```model.u_Eg``` upper bound for the bandgap in Ev
         - ```model.l_n0``` lower bound for the low frequency refractive index
         - ```model.u_n0``` upper bound for the low frequency refractive index
-        - ```model.l_fi``` lower bound for the fi parameter (length shoul be equal to the number of oscillators)
-        - ```model.u_fi``` upper bound for the fi parameter (length shoul be equal to the number of oscillators)
-        - ```model.l_Ei``` lower bound for the Ei parameter (length shoul be equal to the number of oscillators)
-        - ```model.u_Ei``` upper bound for the Ei parameter (length shoul be equal to the number of oscillators)
-        - ```model.l_Gi``` lower bound for the Gi parameter (length shoul be equal to the number of oscillators)
-        - ```model.u_Gi``` upper bound for the Gi parameter (length shoul be equal to the number of oscillators)
+        - ```model.l_fi``` lower bound for the fi parameter (length should be equal to the number of oscillators)
+        - ```model.u_fi``` upper bound for the fi parameter (length should be equal to the number of oscillators)
+        - ```model.l_Ei``` lower bound for the Ei parameter (length should be equal to the number of oscillators)
+        - ```model.u_Ei``` upper bound for the Ei parameter (length should be equal to the number of oscillators)
+        - ```model.l_Gi``` lower bound for the Gi parameter (length should be equal to the number of oscillators)
+        - ```model.u_Gi``` upper bound for the Gi parameter (length should be equal to the number of oscillators)
         - ```model.l_D```  lower bound for the layer thickness in nm
         - ```model.u_D```  upper bound for the layer thickness in nm
       - Real Cauchy model
