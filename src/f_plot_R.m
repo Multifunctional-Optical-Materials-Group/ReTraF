@@ -18,6 +18,8 @@ function [Rt,Rt_S,Rt_P] = f_plot_R(N, D, lcoher, wl, theta, Rexp,onlyplot)
 
     end
 
+    figure(2)
+    clf
     for jj=1:length(theta)
         subplot(length(theta),1,jj)
         if onlyplot == false

@@ -24,6 +24,8 @@ function [Rt,Rt_S,Rt_P,Tt,Tt_S,Tt_P] = f_plot_RT(N, D, lcoher, wl, theta,Rexp,Te
     end
 
     aux = 0;
+    figure(2)
+    clf
     for jj=1:length(theta)
         subplot(length(theta),2,jj+aux)
         if onlyplot == false
@@ -46,6 +48,7 @@ function [Rt,Rt_S,Rt_P,Tt,Tt_S,Tt_P] = f_plot_RT(N, D, lcoher, wl, theta,Rexp,Te
         ylabel("R")
         xlim([min(wl),max(wl)])
     end
+
     
     
 end

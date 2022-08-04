@@ -25,6 +25,8 @@ function [Rt,Rt_S,Rt_P,Tt,Tt_S,Tt_P] = f_plot_RT_scatt(N, D, lcoher, wl, theta,R
     end
 
     aux = 0;
+    figure(2)
+    clf
     for jj=1:length(theta)
         subplot(length(theta),2,jj+aux)
         plot(wl,Texp(:,jj),'LineWidth',1.5,'color','k','LineStyle','-')

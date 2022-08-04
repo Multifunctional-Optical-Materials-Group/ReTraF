@@ -59,6 +59,12 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
             Data_exp.Rexp = Rexp;
             Data_exp.Rexp_P = Rexp_P;
             Data_exp.Rexp_S = Rexp_S;
+            Texp_P = [];
+            Texp_S = [];
+            Texp = [];
+            Data_exp.Texp = Texp;
+            Data_exp.Texp_P = Texp_P;
+            Data_exp.Texp_S = Texp_S;
         elseif isfield(aux,"TSample_P")
             fit_type = "T";
             Texp_P = interp1(aux.wl_exp,aux.TSample_P(:,theta.index),wl)/100;
@@ -67,6 +73,12 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
             Data_exp.Texp = Texp;
             Data_exp.Texp_P = Texp_P;
             Data_exp.Texp_S = Texp_S;
+            Rexp_P = [];
+            Rexp_S = [];
+            Rexp = [];
+            Data_exp.Rexp = Rexp;
+            Data_exp.Rexp_P = Rexp_P;
+            Data_exp.Rexp_S = Rexp_S;
         end
     end
 
@@ -91,7 +103,7 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
     %       'k'       for imaginary part of the RI
     %
     
-    alpha = 0;
+    alpha = [];
     lcoher = foptions.lcoher;
     n_layers = length(models);
     %N = zeros(length(wl),n_layers);
@@ -389,8 +401,10 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
 
 
     if isUnk == true
+        
         if foptions.method == "fmincon"
-            options = optimoptions('fmincon','Algorithm','interior-point',...
+            outF = @(x,optimValues,state)(outfun(x,optimValues,state,models,N, D, wl, theta,Rexp,Texp,fit_type,foptions));
+            options = optimoptions('fmincon','OutputFcn',outF,'Algorithm','interior-point',...
                                'Disp','iter-detailed',...
                                'UseParallel',foptions.parallel,...
                                'MaxIterations',foptions.itermax);
@@ -418,7 +432,8 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
                 [xbest, fbest, exitflag] = fmincon(@(x)f_fit_T(N, D, lcoher, wl, theta.values, Texp, models,  x),x0 ,[], [], [], [], lb, ub,[],options);
             end
         elseif foptions.method == "genetic"
-            options = gaoptimset('Display',   'off', ...
+            outF = @(options,state,flag)(outfun_ga(options,state,flag,models,N, D, wl, theta,Rexp,Texp,fit_type,foptions));
+            options = gaoptimset('Display', 'off', 'OutputFcn',outF, ...
                               'Generations', foptions.itermax, ...
                               'TolFun', 1e-16, ...
                               'StallGenLimit', 300, ...
@@ -613,3 +628,5 @@ end
 
 
 end
+
+
