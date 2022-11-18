@@ -217,7 +217,7 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
                 auxind = auxind+1;
                 models{k2}.index = auxind;
                 nkdata = load(models{k2}.filename);
-                N(:,models{k2}.index) = interp1(nkdata.wl_exp,nkdata.n,wl)+1i*interp1(nkdata.wl_exp,nkdata.n,wl);
+                N(:,models{k2}.index) = interp1(nkdata.wl_exp,nkdata.n,wl)+1i*interp1(nkdata.wl_exp,nkdata.k,wl);
                 if k2~=1 && k2~=n_layers
                     D(models{k2}.index) = models{k2}.D/1000;
                 end
