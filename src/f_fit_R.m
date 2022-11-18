@@ -78,7 +78,6 @@ function T = f_fit_R(N, D, lcoher, wl, theta, Re, models,  x)
     Rt_P=zeros(length(wl),length(theta));
     Rt=zeros(length(wl),length(theta));
 
-    D = D'*1000;
     
     for k1=1:length(theta)
         for k2=1:length(wl)
@@ -91,7 +90,7 @@ function T = f_fit_R(N, D, lcoher, wl, theta, Re, models,  x)
 
         
 
-        T = T + mean((Rt(:,k1)-Re(:,k1)).^2);
+        T = T + mean((Rt(:,k1)-Re(:,k1)).^2)/mean(Re(:,k1).^2);
 
     end
     

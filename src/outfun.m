@@ -122,6 +122,11 @@ function stop = outfun(x,optimValues,state,models,N, D, wl, theta,Rexp,Texp,fit_
                             D_out(models{ww}.index+jj-2) = models_out{ww}.D/nlayers;
                         end
                         aux_par = aux_par+3;
+
+                    case "U-pts"
+                        models_out{ww}.type = "pts";
+                        N_out(:,models{ww}.index) = xbest;
+                        D_out = D;
                     end
              end
     

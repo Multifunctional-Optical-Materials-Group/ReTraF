@@ -17,6 +17,7 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
     models_out = models;
     foptions_out = foptions;
     onlyplot = false;
+    fit_pts = false;
 
     if isempty(data_file)
         onlyplot = true;
@@ -391,6 +392,21 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
                     D(models{k2}.index+jj-1) =100/1000;
                 end
                 auxind = auxind+nlayers-1;
+                isUnk = true;
+            case "U-pts"
+                fit_pts = true;
+                auxind = auxind+1;
+                models{k2}.index = auxind;
+                aux_pts = models{k2}.index;
+                l_npts = models{k2}.l_n;
+                u_npts = models{k2}.u_n;
+                lb = [lb l_npts];
+                ub = [ub u_npts];
+                if k2~=1 && k2~=n_layers
+                    D(models{k2}.index) = models{k2}.D/1000;
+                end
+                isUnk = true;
+                D(models{k2}.index) = models{k2}.D/1000;
         end
     end
 
@@ -424,7 +440,13 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
                     A=A';
                     [xbest, fbest, exitflag] = fmincon(@(x)f_fit_RT_scatt(N, D, lcoher, wl, theta.values, Rexp, Texp, rscale, models,  x),x0 ,A, b, [], [], lb, ub,[],options);
                 else
-                    [xbest, fbest, exitflag] = fmincon(@(x)f_fit_RT(N, D, lcoher, wl, theta.values, Rexp, Texp, rscale, models,  x),x0 ,[], [], [], [], lb, ub,[],options);
+                    if fit_pts == true
+                        for tt = 1:length(wl)
+                            [N(tt,aux_pts), fbest, exitflag] = fmincon(@(x)f_fit_RT_pts(N(tt,:), D, lcoher, wl(tt), theta.values, Rexp, Texp, rscale, models, aux_pts,  x),x0 ,[], [], [], [], lb, ub,[],options);
+                        end
+                    else
+                        [xbest, fbest, exitflag] = fmincon(@(x)f_fit_RT(N, D, lcoher, wl, theta.values, Rexp, Texp, rscale, models,  x),x0 ,[], [], [], [], lb, ub,[],options);
+                    end
                 end
             elseif fit_type =="R"
                 [xbest, fbest, exitflag] = fmincon(@(x)f_fit_R(N, D, lcoher, wl, theta.values, Rexp, models,  x),x0 ,[], [], [], [], lb, ub,[],options);
