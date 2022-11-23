@@ -1,3 +1,12 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%   This work is licensed under the Creative Commons Reconocimiento-NoComercial-CompartirIgual 4.0 Internacional License.
+%   To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 function [Tt,Tt_S,Tt_P] = f_plot_T(N, D, lcoher, wl, theta,Texp,onlyplot)
     

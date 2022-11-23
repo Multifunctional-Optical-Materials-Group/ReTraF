@@ -8,7 +8,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-function stop = outfun(x,optimValues,state,models,N, D, wl, theta,Rexp,Texp,fit_type,foptions)
+function stop = Poutfun(x,optimValues,state,models,N, D, wl, theta,Rexp,Texp,fit_type,foptions)
      stop = false; 
      switch state
          case 'init'
@@ -152,15 +152,15 @@ function stop = outfun(x,optimValues,state,models,N, D, wl, theta,Rexp,Texp,fit_
                     if onlyplot == true
                         error("Exp. data is needed for scattering correction")
                     end
-                    [~, ~, ~, ~, ~, ~] = f_plot_RT_scatt(N_out, D_out, lcoher, wl, theta.values, Rexp, Texp, alpha);
+                    [~, ~, ~, ~, ~, ~] = f_plot_RT_scatt(N_out, D_out, lcoher, wl, theta.values(theta.index), Rexp, Texp, alpha);
                 else
-                    [~, ~, ~, ~, ~, ~] = f_plot_RT(N_out, D_out, lcoher, wl, theta.values, Rexp, Texp, onlyplot);
+                    [~, ~, ~, ~, ~, ~] = Pf_plot_RT(N_out, D_out, lcoher, wl, theta.values(theta.index), Rexp, Texp, onlyplot);
 
                 end
             elseif fit_type =="R"
-                [~, ~, ~] = f_plot_R(N_out, D_out, lcoher, wl, theta.values,Rexp, onlyplot);
+                [~, ~, ~] = f_plot_R(N_out, D_out, lcoher, wl, theta.values(theta.index),Rexp, onlyplot);
             elseif fit_type =="T"
-                [~, ~, ~] = f_plot_T(N_out, D_out, lcoher, wl, theta.values,Texp, onlyplot);
+                [~, ~, ~] = f_plot_T(N_out, D_out, lcoher, wl, theta.values(theta.index),Texp, onlyplot);
             
             end
 

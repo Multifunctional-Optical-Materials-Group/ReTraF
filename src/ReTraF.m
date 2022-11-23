@@ -1,3 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%   This work is licensed under the Creative Commons Reconocimiento-NoComercial-CompartirIgual 4.0 Internacional License.
+%   To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,theta,models,data_file,foptions)
     
     %% UltimaRI

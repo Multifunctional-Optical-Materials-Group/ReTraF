@@ -1,3 +1,12 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%   This work is licensed under the Creative Commons Reconocimiento-NoComercial-CompartirIgual 4.0 Internacional License.
+%   To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 function [state,options,optchanged] = outfun_ga(options,state,flag,models,N, D, wl, theta,Rexp,Texp,fit_type,foptions)
      optchanged = false; 
      switch flag
