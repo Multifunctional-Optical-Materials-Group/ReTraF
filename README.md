@@ -1,8 +1,13 @@
 # ReTraF
-Reflectance and Transmittance fitter for arbitrary layered optical systems
+Reflectance and Transmittance fitter for arbitrary layered optical systems.
 
 ## **Instalation**:
 Add ```src``` folder to Matlab path.
+
+## Suported Models:
+- Constant refractive index model: $n(\lambda) = constant$
+- Real Cauchy Model: $n(\lambda) = A_{1} + 10^{4}\frac{A_{2}}{\lambda^2} + 10^{9}\frac{A_{3}}{\lambda^4}$
+- Imaginary Cauchy Model: $n(\lambda) = A_{1} + 10^{4}\frac{A_{2}}{\lambda^2} + 10^{9}\frac{A_{3}}{\lambda^4} + A_{4}\cdot i + 10^{4}\frac{A_{5}}{\lambda^2}\cdot i + 10^{9}\frac{A_{6}}{\lambda^4}\cdot i$
 
 ## **Usage**:
 ReTraF function call takes the following form:
