@@ -8,6 +8,7 @@ Add ```src``` folder to Matlab path.
 - Constant refractive index model: $n(\lambda) = constant$
 - Real Cauchy Model: $n(\lambda) = A_{1} + 10^{4}\frac{A_{2}}{\lambda^2} + 10^{9}\frac{A_{3}}{\lambda^4}$
 - Imaginary Cauchy Model: $n(\lambda) = A_{1} + 10^{4}\frac{A_{2}}{\lambda^2} + 10^{9}\frac{A_{3}}{\lambda^4} + A_{4}\cdot i + 10^{4}\frac{A_{5}}{\lambda^2}\cdot i + 10^{9}\frac{A_{6}}{\lambda^4}\cdot i$
+- Forouhi-Bloomer model: $n(\lambda) = n_0 + \sum_{i=1,2,3,4} \frac{B_i\cdot (E(\lambda)-E_i) + C_i}{(E(\lambda)-E_i)^2 + G_i^2} + \frac{f_i\cdot (E(\lambda)-E_g)^2\cdot \delta(E(\lambda)-E_g)}{(E(\lambda)-E_i)^2+G_i^2}\cdot i$, being $\delta$ the step function.
 
 ## **Usage**:
 ReTraF function call takes the following form:
