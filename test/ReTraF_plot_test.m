@@ -1,60 +1,56 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%   This work is licensed under the Creative Commons Reconocimiento-NoComercial-CompartirIgual 4.0 Internacional License.
+%   To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/.
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
 clear; clc; close all;
 
-%% UltimaRI
+%% ReTraF plotting test
 
-%% Files
-% Variables inside the data files must be called:
-% 'RSample_P'  for Ppol reflectance
-% 'RSample_S'  for Spol reflectance
-% 'TSample_P'  for Ppol transmittance
-% 'TSample_S'  for Spol transmittance
-% 'wl_exp'     for wavelength in microns
-% 'theta_exp'  for angle of incidence in degrees
-%
-%  Size of Reflectance & Transmittance data must be (  length(wl_exp) ,  length(theta_exp) )
-%
+%% Files (not needed as no fitting will take place)
 
 data_file = [];
 
 %% Parameters
-wl = 450:5:900;
+wl = 450:5:900;  % Wavelength (nm)
 
-theta.values = [6 30 50];
+theta.values = [6 30 50];  % Incident angles of the measurements (degrees)
 theta.index  = [1  2  3];  % Index of the angles to use
 
 
 
-%% Models
+%% Layer models of the structutre
 
 % Air
-air.type = "cnst";
-air.n = 1.0;
+air.type = "cnst";  % Known constant refractive index type
+air.n = 1.0;   % Refractive index
 
 
 % Material
-material.type = "Ch-nk";
-material.A = [2.1 , 0.2 , 0.02 , 0.01 , 0.002 , 0];
-material.D = 500;
+material.type = "Ch-nk";  % Known refractive index Imaginary Cauchy type
+material.A = [2.1 , 0.2 , 0.02 , 0.01 , 0.002 , 0];   % Imaginary Cauchy model parameters
+material.D = 500;    % Thickness (nm)
 
 
 
 % Quarz substrate
-quarz.type = "cnst";
-quarz.n = 1.46;
-quarz.D = 1e6;
+quarz.type = "cnst";    % Known constant refractive index type
+quarz.n = 1.46;      % Refractive index
+quarz.D = 1e6;      % Layer thickness (nm)
 
 
 models = {air , material , quarz , air};
 
 
-%% Fitting options
+%% Fitting options (no fitting will take place as there isn't any Unknown type material)
 
-foptions.method = "fmincon";
-foptions.itermax = 20;
-foptions.scatt = false;
-foptions.parallel = true;
-foptions.popsize = 64;
-foptions.lcoher = 1e4;
+foptions.scatt = false;     % Scattering correction ( true or false)
+foptions.lcoher = 1e4;      % Coherence length (recommended 1e4)
+
 
 
 
