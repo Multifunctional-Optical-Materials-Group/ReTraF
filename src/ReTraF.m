@@ -438,30 +438,34 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
     
             if fit_type =="R&T"
                 if foptions.scatt == true
-                    x0 = [x0  ones(1,length(theta.values))*0.8];
-                    lb = [lb ones(1,length(theta.values))*0.5];
-                    ub = [ub ones(1,length(theta.values))*1.0];
-                    A = zeros(length(lb),length(theta.values)-1);
-                    b = zeros(length(theta.values)-1,1);
-                    for zz=1:length(theta.values)-1
-                        A(length(lb)-length(theta.values)+zz,zz)=1;
-                        A(length(lb)-length(theta.values)+zz+1,zz)=-1;
+                    x0 = [x0  ones(1,length(theta.values(theta.index)))*0.8];
+                    lb = [lb ones(1,length(theta.values(theta.index)))*0.5];
+                    ub = [ub ones(1,length(theta.values(theta.index)))*1.0];
+                    A = zeros(length(lb),length(theta.values(theta.index))-1);
+                    b = zeros(length(theta.values(theta.index))-1,1);
+                    for zz=1:length(theta.values(theta.index))-1
+                        A(length(lb)-length(theta.values(theta.index))+zz,zz)=1;
+                        A(length(lb)-length(theta.values(theta.index))+zz+1,zz)=-1;
                     end
                     A=A';
-                    [xbest, fbest, exitflag] = fmincon(@(x)f_fit_RT_scatt(N, D, lcoher, wl, theta.values, Rexp, Texp, rscale, models,  x),x0 ,A, b, [], [], lb, ub,[],options);
+                    if length(theta.values(theta.index))==1
+                        A = [];
+                        b = [];
+                    end
+                    [xbest, fbest, exitflag] = fmincon(@(x)f_fit_RT_scatt(N, D, lcoher, wl, theta.values(theta.index), Rexp, Texp, rscale, models,  x),x0 ,A, b, [], [], lb, ub,[],options);
                 else
                     if fit_pts == true
                         for tt = 1:length(wl)
-                            [N(tt,aux_pts), fbest, exitflag] = fmincon(@(x)f_fit_RT_pts(N(tt,:), D, lcoher, wl(tt), theta.values, Rexp, Texp, rscale, models, aux_pts,  x),x0 ,[], [], [], [], lb, ub,[],options);
+                            [N(tt,aux_pts), fbest, exitflag] = fmincon(@(x)f_fit_RT_pts(N(tt,:), D, lcoher, wl(tt), theta.values(theta.index), Rexp, Texp, rscale, models, aux_pts,  x),x0 ,[], [], [], [], lb, ub,[],options);
                         end
                     else
-                        [xbest, fbest, exitflag] = fmincon(@(x)f_fit_RT(N, D, lcoher, wl, theta.values, Rexp, Texp, rscale, models,  x),x0 ,[], [], [], [], lb, ub,[],options);
+                        [xbest, fbest, exitflag] = fmincon(@(x)f_fit_RT(N, D, lcoher, wl, theta.values(theta.index), Rexp, Texp, rscale, models,  x),x0 ,[], [], [], [], lb, ub,[],options);
                     end
                 end
             elseif fit_type =="R"
-                [xbest, fbest, exitflag] = fmincon(@(x)f_fit_R(N, D, lcoher, wl, theta.values, Rexp, models,  x),x0 ,[], [], [], [], lb, ub,[],options);
+                [xbest, fbest, exitflag] = fmincon(@(x)f_fit_R(N, D, lcoher, wl, theta.values(theta.index), Rexp, models,  x),x0 ,[], [], [], [], lb, ub,[],options);
             elseif fit_type =="T"
-                [xbest, fbest, exitflag] = fmincon(@(x)f_fit_T(N, D, lcoher, wl, theta.values, Texp, models,  x),x0 ,[], [], [], [], lb, ub,[],options);
+                [xbest, fbest, exitflag] = fmincon(@(x)f_fit_T(N, D, lcoher, wl, theta.values(theta.index), Texp, models,  x),x0 ,[], [], [], [], lb, ub,[],options);
             end
         elseif foptions.method == "genetic"
             outF = @(options,state,flag)(outfun_ga(options,state,flag,models,N, D, wl, theta,Rexp,Texp,fit_type,foptions));
@@ -474,23 +478,23 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
                               'PlotFcns', @gaplotbestf);
             if fit_type =="R&T"
                 if foptions.scatt == true
-                    lb = [lb ones(1,length(theta.values))*0.5];
-                    ub = [ub ones(1,length(theta.values))*1.0];
-                    A = zeros(length(lb),length(theta.values)-1);
-                    b = zeros(length(theta.values)-1,1);
-                    for zz=1:length(theta.values)-1
-                        A(length(lb)-length(theta.values)+zz,zz)=1;
-                        A(length(lb)-length(theta.values)+zz+1,zz)=-1;
+                    lb = [lb ones(1,length(theta.values(theta.index)))*0.5];
+                    ub = [ub ones(1,length(theta.values(theta.index)))*1.0];
+                    A = zeros(length(lb),length(theta.values(theta.index))-1);
+                    b = zeros(length(theta.values(theta.index))-1,1);
+                    for zz=1:length(theta.values(theta.index))-1
+                        A(length(lb)-length(theta.values(theta.index))+zz,zz)=1;
+                        A(length(lb)-length(theta.values(theta.index))+zz+1,zz)=-1;
                     end
                     A=A';
-                    [xbest, fbest, exitflag] = ga(@(x)f_fit_RT_scatt(N, D, lcoher, wl, theta.values, Rexp, Texp, rscale, models,  x), length(lb) ,A, b, [], [], lb, ub,[],options);
+                    [xbest, fbest, exitflag] = ga(@(x)f_fit_RT_scatt(N, D, lcoher, wl, theta.values(theta.index), Rexp, Texp, rscale, models,  x), length(lb) ,A, b, [], [], lb, ub,[],options);
                 else
-                    [xbest, fbest, exitflag] = ga(@(x)f_fit_RT(N, D, lcoher, wl, theta.values, Rexp, Texp, rscale, models,  x),length(lb) ,[], [], [], [], lb, ub,[],options);
+                    [xbest, fbest, exitflag] = ga(@(x)f_fit_RT(N, D, lcoher, wl, theta.values(theta.index), Rexp, Texp, rscale, models,  x),length(lb) ,[], [], [], [], lb, ub,[],options);
                 end
             elseif fit_type =="R"
-                [xbest, fbest, exitflag] = ga(@(x)f_fit_R(N, D, lcoher, wl, theta.values, Rexp, models,  x),length(lb) ,[], [], [], [], lb, ub,[],options);
+                [xbest, fbest, exitflag] = ga(@(x)f_fit_R(N, D, lcoher, wl, theta.values(theta.index), Rexp, models,  x),length(lb) ,[], [], [], [], lb, ub,[],options);
             elseif fit_type =="T"
-                [xbest, fbest, exitflag] = ga(@(x)f_fit_T(N, D, lcoher, wl, theta.values, Texp, models,  x),length(lb) ,[], [], [], [], lb, ub,[],options);
+                [xbest, fbest, exitflag] = ga(@(x)f_fit_T(N, D, lcoher, wl, theta.values(theta.index), Texp, models,  x),length(lb) ,[], [], [], [], lb, ub,[],options);
             end
         end
     else
@@ -630,7 +634,7 @@ if fit_type =="R&T"
         if onlyplot == true
             error("Exp. data is needed for scattering correction")
         end
-        [Rt,Rt_S,Rt_P,Tt,Tt_S,Tt_P] = f_plot_RT_scatt(N, D, lcoher, wl, theta.values, Rexp, Texp, alpha);
+        [Rt,Rt_S,Rt_P,Tt,Tt_S,Tt_P] = f_plot_RT_scatt(N, D, lcoher, wl, theta.values(theta.index), Rexp, Texp, alpha);
         Data_theor.Rt = Rt;
         Data_theor.Rt_S = Rt_S;
         Data_theor.Rt_P = Rt_P;
@@ -638,7 +642,7 @@ if fit_type =="R&T"
         Data_theor.Tt_S = Tt_S;
         Data_theor.Tt_P = Tt_P;
     else
-        [Rt,Rt_S,Rt_P,Tt,Tt_S,Tt_P] = f_plot_RT(N, D, lcoher, wl, theta.values, Rexp, Texp, onlyplot);
+        [Rt,Rt_S,Rt_P,Tt,Tt_S,Tt_P] = f_plot_RT(N, D, lcoher, wl, theta.values(theta.index), Rexp, Texp, onlyplot);
         Data_theor.Rt = Rt;
         Data_theor.Rt_S = Rt_S;
         Data_theor.Rt_P = Rt_P;
@@ -647,12 +651,12 @@ if fit_type =="R&T"
         Data_theor.Tt_P = Tt_P;
     end
 elseif fit_type =="R"
-    [Rt,Rt_S,Rt_P] = f_plot_R(N, D, lcoher, wl, theta.values,Rexp, onlyplot);
+    [Rt,Rt_S,Rt_P] = f_plot_R(N, D, lcoher, wl, theta.values(theta.index),Rexp, onlyplot);
     Data_theor.Rt = Rt;
     Data_theor.Rt_S = Rt_S;
     Data_theor.Rt_P = Rt_P;
 elseif fit_type =="T"
-    [Tt,Tt_S,Tt_P] = f_plot_T(N, D, lcoher, wl, theta.values,Texp, onlyplot);
+    [Tt,Tt_S,Tt_P] = f_plot_T(N, D, lcoher, wl, theta.values(theta.index),Texp, onlyplot);
     Data_theor.Tt = Tt;
     Data_theor.Tt_S = Tt_S;
     Data_theor.Tt_P = Tt_P;

@@ -26,6 +26,10 @@ function [Tt,Tt_S,Tt_P] = f_plot_T(N, D, lcoher, wl, theta,Texp,onlyplot)
 
     end
 
+    if length(theta)==1
+        Texp = Texp';
+    end
+
     figure(2)
     clf
     for jj=1:length(theta)

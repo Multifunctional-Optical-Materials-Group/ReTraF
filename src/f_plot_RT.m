@@ -32,6 +32,12 @@ function [Rt,Rt_S,Rt_P,Tt,Tt_S,Tt_P] = f_plot_RT(N, D, lcoher, wl, theta,Rexp,Te
 
     end
 
+
+    if length(theta)==1
+        Rexp = Rexp';
+        Texp = Texp';
+    end
+
     aux = 0;
     figure(2)
     clf

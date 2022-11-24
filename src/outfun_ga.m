@@ -136,6 +136,7 @@ function [state,options,optchanged] = outfun_ga(options,state,flag,models,N, D, 
                     end
              end
     
+             
             D_out = D_out'*1000;
         
             if fit_type =="R&T"
@@ -148,15 +149,15 @@ function [state,options,optchanged] = outfun_ga(options,state,flag,models,N, D, 
                     if onlyplot == true
                         error("Exp. data is needed for scattering correction")
                     end
-                    [~, ~, ~, ~, ~, ~] = f_plot_RT_scatt(N_out, D_out, lcoher, wl, theta.values, Rexp, Texp, alpha);
+                    [~, ~, ~, ~, ~, ~] = f_plot_RT_scatt(N_out, D_out, lcoher, wl, theta.values(theta.index), Rexp, Texp, alpha);
                 else
-                    [~, ~, ~, ~, ~, ~] = f_plot_RT(N_out, D_out, lcoher, wl, theta.values, Rexp, Texp, onlyplot);
+                    [~, ~, ~, ~, ~, ~] = f_plot_RT(N_out, D_out, lcoher, wl, theta.values(theta.index), Rexp, Texp, onlyplot);
 
                 end
             elseif fit_type =="R"
-                [~, ~, ~] = f_plot_R(N_out, D_out, lcoher, wl, theta.values,Rexp, onlyplot);
+                [~, ~, ~] = f_plot_R(N_out, D_out, lcoher, wl, theta.values(theta.index),Rexp, onlyplot);
             elseif fit_type =="T"
-                [~, ~, ~] = f_plot_T(N_out, D_out, lcoher, wl, theta.values,Texp, onlyplot);
+                [~, ~, ~] = f_plot_T(N_out, D_out, lcoher, wl, theta.values(theta.index),Texp, onlyplot);
             
             end
 

@@ -82,6 +82,9 @@ function T = f_fit_RT_scatt(N, D, lcoher, wl, theta, Re, Te, rscale, models,  x)
     D = D*1000;
 
     alpha = x(aux_par:end);
+    if length(theta)==1
+        alpha = x(end);
+    end
 
     T       = 0;
 

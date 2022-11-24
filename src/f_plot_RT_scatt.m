@@ -19,6 +19,7 @@ function [Rt,Rt_S,Rt_P,Tt,Tt_S,Tt_P] = f_plot_RT_scatt(N, D, lcoher, wl, theta,R
     Tt=zeros(length(wl),length(theta));
     Ae=zeros(length(wl),length(theta));
     
+
     for k1=1:length(theta)
         for k2=1:length(wl)
             
@@ -28,8 +29,15 @@ function [Rt,Rt_S,Rt_P,Tt,Tt_S,Tt_P] = f_plot_RT_scatt(N, D, lcoher, wl, theta,R
         
         Rt(:,k1) = 0.5*(Rt_S(:,k1) + Rt_P(:,k1));
         Tt(:,k1) = 0.5*(Tt_S(:,k1) + Tt_P(:,k1));
-        Ae(:,k1) = 1-Rexp(:,k1)-Texp(:,k1);
 
+    end
+
+    Ae = 1-Rexp-Texp;
+
+    if length(theta)==1
+        Rexp = Rexp';
+        Texp = Texp';
+        Ae = Ae';
     end
 
     aux = 0;

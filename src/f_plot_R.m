@@ -26,6 +26,9 @@ function [Rt,Rt_S,Rt_P] = f_plot_R(N, D, lcoher, wl, theta, Rexp,onlyplot)
 
 
     end
+    if length(theta)==1
+        Rexp = Rexp';
+    end
 
     figure(2)
     clf
