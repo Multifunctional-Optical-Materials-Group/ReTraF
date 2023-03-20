@@ -7,7 +7,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [n,k] = f_nk_ForouhiBloomer(wl, Eg, n0, fi, Ei, Gi)
+function [n] = f_nk_ForouhiBloomer(wl, Eg, n0, fi, Ei, Gi)
 
 % clear all; clc; close all;
 % 
@@ -34,11 +34,7 @@ end
 [~, nEg]     = min(abs(E-Eg));
 k(nEg+1:end) = 0;
 
-
-% if ext == 0
-     [~, nEg]     = min(abs(E-Eg));
-     k(nEg+1:end) = 0;
-% end
+n = n+k*1i;
 
 %%
 % figure

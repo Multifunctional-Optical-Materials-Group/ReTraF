@@ -15,30 +15,10 @@ function T = f_fit_T(N, D, lcoher, wl, theta, Te, models,  x)
     for ww=1:length(models)
         switch models{ww}.type
 
-            case "U-Fh-1" % 5 + 1 par
-                N(:,models{ww}.index) = f_nk_ForouhiBloomer(wl,x(aux_par+(1)),x(aux_par+(2)),x(aux_par+(3)),x(aux_par+(4)),x(aux_par+(5)));
-                aux_par = aux_par+5;
-                if ww~=1 && ww~=n_layers
-                    D(models{ww}.index-1) = x(aux_par+1);
-                    aux_par = aux_par+1;
-                end
-            case "U-Fh-2" % 8 + 1 par
-                N(:,models{ww}.index) = f_nk_ForouhiBloomer(wl,x(aux_par+(1)),x(aux_par+(2)),x(aux_par+(3:4)),x(aux_par+(5:6)),x(aux_par+(7:8)));
-                aux_par = aux_par+8;
-                if ww~=1 && ww~=n_layers
-                    D(models{ww}.index-1) = x(aux_par+1);
-                    aux_par = aux_par+1;
-                end
-            case "U-Fh-3" % 11 + 1 par
-                N(:,models{ww}.index) = f_nk_ForouhiBloomer(wl,x(aux_par+(1)),x(aux_par+(2)),x(aux_par+(3:5)),x(aux_par+(6:8)),x(aux_par+(9:11)));
-                aux_par = aux_par+11;
-                if ww~=1 && ww~=n_layers
-                    D(models{ww}.index-1) = x(aux_par+1);
-                    aux_par = aux_par+1;
-                end
-            case "U-Fh-4" % 14 + 1 par
-                N(:,models{ww}.index) = f_nk_ForouhiBloomer(wl,x(aux_par+(1)),x(aux_par+(2)),x(aux_par+(3:6)),x(aux_par+(7:10)),x(aux_par+(11:14)));
-                aux_par = aux_par+14;
+            case "U-Fh-N" % 5 + 1 par
+                a = models{ww}.nosc;
+                N(:,models{ww}.index) = f_nk_ForouhiBloomer(wl,x(aux_par+(1)),x(aux_par+(2)),x(aux_par+(3:3+a-1)),x(aux_par+(3+a:3+2*a-1)),x(aux_par+(3+2*a:3+3*a-1)));
+                aux_par = aux_par+2+3*a;
                 if ww~=1 && ww~=n_layers
                     D(models{ww}.index-1) = x(aux_par+1);
                     aux_par = aux_par+1;

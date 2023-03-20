@@ -27,63 +27,11 @@ function [state,options,optchanged] = outfun_ga(options,state,flag,models,N, D, 
              isUnk = true;
              for ww=1:length(models)
                 switch models{ww}.type
-                    case "U-Fh-1" % 5 + 1 par
-                        models_out{ww}.type = "Fh-1";
-                        models_out{ww}.Eg =  xbest(aux_par+(1));
-                        models_out{ww}.n0 =  xbest(aux_par+(2));
-                        models_out{ww}.fi =  xbest(aux_par+(3));
-                        models_out{ww}.Ei =  xbest(aux_par+(4));
-                        models_out{ww}.Gi =  xbest(aux_par+(5));
-        
-                        N_out(:,models{ww}.index) = f_nk_ForouhiBloomer(wl,xbest(aux_par+(1)),xbest(aux_par+(2)),xbest(aux_par+(3)),xbest(aux_par+(4)),xbest(aux_par+(5)));
-                        aux_par = aux_par+5;
+                    case "U-Fh-N" % 5 + 1 par
+                        a = models{ww}.nosc;
+                        N_out(:,models{ww}.index) = f_nk_ForouhiBloomer(wl,xbest(aux_par+(1)),xbest(aux_par+(2)),xbest(aux_par+(3:3+a-1)),xbest(aux_par+(3+a:3+2*a-1)),xbest(aux_par+(3+2*a:3+3*a-1)));
+                        aux_par = aux_par+2+3*a;
                         if ww~=1 && ww~=n_layers
-                            models_out{ww}.D = xbest(aux_par+1)*1000;
-                            D_out(models{ww}.index-1) = xbest(aux_par+1);
-                            aux_par = aux_par+1;
-                        end
-                    case "U-Fh-2" % 8 + 1 par
-                        models_out{ww}.type = "Fh-2";
-                        models_out{ww}.Eg =  xbest(aux_par+(1));
-                        models_out{ww}.n0 =  xbest(aux_par+(2));
-                        models_out{ww}.fi =  xbest(aux_par+(3:4));
-                        models_out{ww}.Ei =  xbest(aux_par+(5:6));
-                        models_out{ww}.Gi =  xbest(aux_par+(7:8));
-        
-                        N_out(:,models{ww}.index) = f_nk_ForouhiBloomer(wl,xbest(aux_par+(1)),xbest(aux_par+(2)),xbest(aux_par+(3:4)),xbest(aux_par+(5:6)),xbest(aux_par+(7:8)));
-                        aux_par = aux_par+8;
-                        if ww~=1 && ww~=n_layers
-                            models_out{ww}.D = xbest(aux_par+1)*1000;
-                            D_out(models{ww}.index-1) = xbest(aux_par+1);
-                            aux_par = aux_par+1;
-                        end
-                    case "U-Fh-3" % 11 + 1 par
-                        models_out{ww}.type = "Fh-3";
-                        models_out{ww}.Eg =  xbest(aux_par+(1));
-                        models_out{ww}.n0 =  xbest(aux_par+(2));
-                        models_out{ww}.fi =  xbest(aux_par+(3:5));
-                        models_out{ww}.Ei =  xbest(aux_par+(6:8));
-                        models_out{ww}.Gi =  xbest(aux_par+(9:11));
-        
-                        N_out(:,models{ww}.index) = f_nk_ForouhiBloomer(wl,xbest(aux_par+(1)),xbest(aux_par+(2)),xbest(aux_par+(3:5)),xbest(aux_par+(6:8)),xbest(aux_par+(9:11)));
-                        aux_par = aux_par+11;
-                        if ww~=1 && ww~=n_layers
-                            models_out{ww}.D = xbest(aux_par+1)*1000;
-                            D_out(models{ww}.index-1) = xbest(aux_par+1);
-                            aux_par = aux_par+1;
-                        end
-                    case "U-Fh-4" % 14 + 1 par
-                        models_out{ww}.type = "Fh-4";
-                        models_out{ww}.Eg =  xbest(aux_par+(1));
-                        models_out{ww}.n0 =  xbest(aux_par+(2));
-                        models_out{ww}.fi =  xbest(aux_par+(3:6));
-                        models_out{ww}.Ei =  xbest(aux_par+(7:10));
-                        models_out{ww}.Gi =  xbest(aux_par+(11:14));
-        
-                        N_out(:,models{ww}.index) = f_nk_ForouhiBloomer(wl,xbest(aux_par+(1)),xbest(aux_par+(2)),xbest(aux_par+(3:6)),xbest(aux_par+(7:10)),xbest(aux_par+(11:14)));
-                        aux_par = aux_par+14;
-                        if ww~=1 && ww~=n_layers
-                            models_out{ww}.D = xbest(aux_par+1)*1000;
                             D_out(models{ww}.index-1) = xbest(aux_par+1);
                             aux_par = aux_par+1;
                         end

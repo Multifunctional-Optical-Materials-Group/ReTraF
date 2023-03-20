@@ -152,43 +152,7 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
                     D(models{k2}.index+jj-1) = models{k2}.D/nlayers/1000;
                 end
                 auxind = auxind+nlayers-1;
-            case "Fh-1"  % 5 + 1 par
-                auxind = auxind+1;
-                models{k2}.index = auxind;
-                Eg = models{k2}.Eg;
-                n0 = models{k2}.n0;
-                fi = models{k2}.fi;
-                Ei = models{k2}.Ei;
-                Gi = models{k2}.Gi;
-                N(:,models{k2}.index) = f_nk_ForouhiBloomer(wl,Eg, n0, fi, Ei, Gi);
-                if k2~=1 && k2~=n_layers
-                    D(models{k2}.index) = models{k2}.D/1000;
-                end
-            case "Fh-2"  % 5 + 1 par
-                auxind = auxind+1;
-                models{k2}.index = auxind;
-                Eg = models{k2}.Eg;
-                n0 = models{k2}.n0;
-                fi = models{k2}.fi;
-                Ei = models{k2}.Ei;
-                Gi = models{k2}.Gi;
-                N(:,models{k2}.index) = f_nk_ForouhiBloomer(wl,Eg, n0, fi, Ei, Gi);
-                if k2~=1 && k2~=n_layers
-                    D(models{k2}.index) = models{k2}.D/1000;
-                end
-            case "Fh-3"  % 5 + 1 par
-                auxind = auxind+1;
-                models{k2}.index = auxind;
-                Eg = models{k2}.Eg;
-                n0 = models{k2}.n0;
-                fi = models{k2}.fi;
-                Ei = models{k2}.Ei;
-                Gi = models{k2}.Gi;
-                N(:,models{k2}.index) = f_nk_ForouhiBloomer(wl,Eg, n0, fi, Ei, Gi);
-                if k2~=1 && k2~=n_layers
-                    D(models{k2}.index) = models{k2}.D/1000;
-                end
-            case "Fh-4"  % 5 + 1 par
+            case "Fh-N"  % 5 + 1 par
                 auxind = auxind+1;
                 models{k2}.index = auxind;
                 Eg = models{k2}.Eg;
@@ -232,7 +196,7 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
                 if k2~=1 && k2~=n_layers
                     D(models{k2}.index) = models{k2}.D/1000;
                 end
-            case "U-Fh-1" % 5 + 1 par
+            case "U-Fh-N" % 5 + 1 par
                 auxind = auxind+1;
                 models{k2}.index = auxind;
                 l_Eg = models{k2}.l_Eg;
@@ -243,6 +207,8 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
 
                 l_fi = models{k2}.l_fi;
                 u_fi = models{k2}.u_fi;
+
+                models{k2}.nosc = length(l_fi);
 
                 l_Ei = models{k2}.l_Ei;
                 u_Ei = models{k2}.u_Ei;
@@ -259,86 +225,7 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
                 if k2~=1 && k2~=n_layers
                     D(models{k2}.index) = 100/1000;
                 end
-            case "U-Fh-2" % 5 + 1 par
-                auxind = auxind+1;
-                models{k2}.index = auxind;
-                l_Eg = models{k2}.l_Eg;
-                u_Eg = models{k2}.u_Eg;
 
-                l_n0 = models{k2}.l_n0;
-                u_n0 = models{k2}.u_n0;
-
-                l_fi = models{k2}.l_fi;
-                u_fi = models{k2}.u_fi;
-
-                l_Ei = models{k2}.l_Ei;
-                u_Ei = models{k2}.u_Ei;
-
-                l_Gi = models{k2}.l_Gi;
-                u_Gi = models{k2}.u_Gi;
-
-                l_D = models{k2}.l_D/1000;
-                u_D = models{k2}.u_D/1000;
-
-                lb = [lb l_Eg l_n0 l_fi l_Ei l_Gi l_D];
-                ub = [ub u_Eg u_n0 u_fi u_Ei u_Gi u_D];
-                if k2~=1 && k2~=n_layers
-                    D(models{k2}.index) = 100/1000;
-                end
-            case "U-Fh-3" % 5 + 1 par
-                auxind = auxind+1;
-                models{k2}.index = auxind;
-                l_Eg = models{k2}.l_Eg;
-                u_Eg = models{k2}.u_Eg;
-
-                l_n0 = models{k2}.l_n0;
-                u_n0 = models{k2}.u_n0;
-
-                l_fi = models{k2}.l_fi;
-                u_fi = models{k2}.u_fi;
-
-                l_Ei = models{k2}.l_Ei;
-                u_Ei = models{k2}.u_Ei;
-
-                l_Gi = models{k2}.l_Gi;
-                u_Gi = models{k2}.u_Gi;
-
-                l_D = models{k2}.l_D/1000;
-                u_D = models{k2}.u_D/1000;
-
-                lb = [lb l_Eg l_n0 l_fi l_Ei l_Gi l_D];
-                ub = [ub u_Eg u_n0 u_fi u_Ei u_Gi u_D];
-                isUnk = true;
-                if k2~=1 && k2~=n_layers
-                    D(models{k2}.index) = 100/1000;
-                end
-            case "U-Fh-4" % 5 + 1 par
-                auxind = auxind+1;
-                models{k2}.index = auxind;
-                l_Eg = models{k2}.l_Eg;
-                u_Eg = models{k2}.u_Eg;
-
-                l_n0 = models{k2}.l_n0;
-                u_n0 = models{k2}.u_n0;
-
-                l_fi = models{k2}.l_fi;
-                u_fi = models{k2}.u_fi;
-
-                l_Ei = models{k2}.l_Ei;
-                u_Ei = models{k2}.u_Ei;
-
-                l_Gi = models{k2}.l_Gi;
-                u_Gi = models{k2}.u_Gi;
-
-                l_D = models{k2}.l_D/1000;
-                u_D = models{k2}.u_D/1000;
-
-                lb = [lb l_Eg l_n0 l_fi l_Ei l_Gi l_D];
-                ub = [ub u_Eg u_n0 u_fi u_Ei u_Gi u_D];
-                isUnk = true;
-                if k2~=1 && k2~=n_layers
-                    D(models{k2}.index) = 100/1000;
-                end
             case "U-Ch-n"   % 3 + 1 par
                 auxind = auxind+1;
                 models{k2}.index = auxind;
@@ -509,66 +396,22 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
     if isUnk == true
         for ww=1:length(models)
             switch models{ww}.type
-                case "U-Fh-1" % 5 + 1 par
+                case "U-Fh-N" % 5 + 1 par
+                    a = models{ww}.nosc;
                     models_out{ww}.type = "Fh-1";
                     models_out{ww}.Eg =  xbest(aux_par+(1));
                     models_out{ww}.n0 =  xbest(aux_par+(2));
-                    models_out{ww}.fi =  xbest(aux_par+(3));
-                    models_out{ww}.Ei =  xbest(aux_par+(4));
-                    models_out{ww}.Gi =  xbest(aux_par+(5));
-    
-                    N(:,models{ww}.index) = f_nk_ForouhiBloomer(wl,xbest(aux_par+(1)),xbest(aux_par+(2)),xbest(aux_par+(3)),xbest(aux_par+(4)),xbest(aux_par+(5)));
-                    aux_par = aux_par+5;
+                    models_out{ww}.fi =  xbest(aux_par+(3:3+a-1));
+                    models_out{ww}.Ei =  xbest(aux_par+(3+a:3+2*a-1));
+                    models_out{ww}.Gi =  xbest(aux_par+(3+2*a:3+3*a-1));
+                    N(:,models{ww}.index) = f_nk_ForouhiBloomer(wl,xbest(aux_par+(1)),xbest(aux_par+(2)),xbest(aux_par+(3:3+a-1)),xbest(aux_par+(3+a:3+2*a-1)),xbest(aux_par+(3+2*a:3+3*a-1)));
+                    aux_par = aux_par+2+3*a;
                     if ww~=1 && ww~=n_layers
                         models_out{ww}.D = xbest(aux_par+1)*1000;
                         D(models{ww}.index-1) = xbest(aux_par+1);
                         aux_par = aux_par+1;
                     end
-                case "U-Fh-2" % 8 + 1 par
-                    models_out{ww}.type = "Fh-2";
-                    models_out{ww}.Eg =  xbest(aux_par+(1));
-                    models_out{ww}.n0 =  xbest(aux_par+(2));
-                    models_out{ww}.fi =  xbest(aux_par+(3:4));
-                    models_out{ww}.Ei =  xbest(aux_par+(5:6));
-                    models_out{ww}.Gi =  xbest(aux_par+(7:8));
-    
-                    N(:,models{ww}.index) = f_nk_ForouhiBloomer(wl,xbest(aux_par+(1)),xbest(aux_par+(2)),xbest(aux_par+(3:4)),xbest(aux_par+(5:6)),xbest(aux_par+(7:8)));
-                    aux_par = aux_par+8;
-                    if ww~=1 && ww~=n_layers
-                        models_out{ww}.D = xbest(aux_par+1)*1000;
-                        D(models{ww}.index-1) = xbest(aux_par+1);
-                        aux_par = aux_par+1;
-                    end
-                case "U-Fh-3" % 11 + 1 par
-                    models_out{ww}.type = "Fh-3";
-                    models_out{ww}.Eg =  xbest(aux_par+(1));
-                    models_out{ww}.n0 =  xbest(aux_par+(2));
-                    models_out{ww}.fi =  xbest(aux_par+(3:5));
-                    models_out{ww}.Ei =  xbest(aux_par+(6:8));
-                    models_out{ww}.Gi =  xbest(aux_par+(9:11));
-    
-                    N(:,models{ww}.index) = f_nk_ForouhiBloomer(wl,xbest(aux_par+(1)),xbest(aux_par+(2)),xbest(aux_par+(3:5)),xbest(aux_par+(6:8)),xbest(aux_par+(9:11)));
-                    aux_par = aux_par+11;
-                    if ww~=1 && ww~=n_layers
-                        models_out{ww}.D = xbest(aux_par+1)*1000;
-                        D(models{ww}.index-1) = xbest(aux_par+1);
-                        aux_par = aux_par+1;
-                    end
-                case "U-Fh-4" % 14 + 1 par
-                    models_out{ww}.type = "Fh-4";
-                    models_out{ww}.Eg =  xbest(aux_par+(1));
-                    models_out{ww}.n0 =  xbest(aux_par+(2));
-                    models_out{ww}.fi =  xbest(aux_par+(3:6));
-                    models_out{ww}.Ei =  xbest(aux_par+(7:10));
-                    models_out{ww}.Gi =  xbest(aux_par+(11:14));
-    
-                    N(:,models{ww}.index) = f_nk_ForouhiBloomer(wl,xbest(aux_par+(1)),xbest(aux_par+(2)),xbest(aux_par+(3:6)),xbest(aux_par+(7:10)),xbest(aux_par+(11:14)));
-                    aux_par = aux_par+14;
-                    if ww~=1 && ww~=n_layers
-                        models_out{ww}.D = xbest(aux_par+1)*1000;
-                        D(models{ww}.index-1) = xbest(aux_par+1);
-                        aux_par = aux_par+1;
-                    end
+                
                 case "U-Ch-n"   % 3 + 1 par
                     models_out{ww}.type = "Ch-n";
                     models_out{ww}.A = xbest(aux_par+(1:3));
