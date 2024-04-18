@@ -93,7 +93,7 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
         end
     end
 
-    foptions_out.rscale = rscale;
+    %foptions_out.rscale = rscale;
 
     %% Refractive Index Models
     % Different refractive index models can be used for each unknown layer
