@@ -93,7 +93,7 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
         end
     end
 
-
+    foptions_out.rscale = rscale;
 
     %% Refractive Index Models
     % Different refractive index models can be used for each unknown layer
@@ -164,6 +164,23 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
                 if k2~=1 && k2~=n_layers
                     D(models{k2}.index) = models{k2}.D/1000;
                 end
+
+            case "eFh-N"  % 5 + 1 par
+                auxind = auxind+1;
+                models{k2}.index = auxind;
+                Eg = models{k2}.Eg;
+                n0 = models{k2}.n0;
+                fi = models{k2}.fi;
+                Ei = models{k2}.Ei;
+                Gi = models{k2}.Gi;
+                n_pvk = f_nk_ForouhiBloomer(wl,Eg, n0, fi, Ei, Gi);
+                ff_pvk = models{k2}.ff_pvk;
+                n_mat = models{k2}.n_mat;
+                ff_mat = models{k2}.ff_mat;
+                N(:,models{k2}.index) = f_nk_EMA(n_mat,n_pvk,1.0, ff_mat, ff_pvk ,2);
+                if k2~=1 && k2~=n_layers
+                    D(models{k2}.index) = models{k2}.D/1000;
+                end
             case "Ch-n"   % 3 + 1 par
                 auxind = auxind+1;
                 models{k2}.index = auxind;
@@ -192,7 +209,7 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
                 auxind = auxind+1;
                 models{k2}.index = auxind;
                 nkdata = load(models{k2}.filename);
-                N(:,models{k2}.index) = interp1(nkdata.wl_exp,nkdata.n,wl)+1i*interp1(nkdata.wl_exp,nkdata.k,wl);
+                N(:,models{k2}.index) = interp1(nkdata.wl,nkdata.n,wl)+1i*interp1(nkdata.wl,nkdata.k,wl);
                 if k2~=1 && k2~=n_layers
                     D(models{k2}.index) = models{k2}.D/1000;
                 end
@@ -221,6 +238,43 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
 
                 lb = [lb l_Eg l_n0 l_fi l_Ei l_Gi l_D];
                 ub = [ub u_Eg u_n0 u_fi u_Ei u_Gi u_D];
+                isUnk = true;
+                if k2~=1 && k2~=n_layers
+                    D(models{k2}.index) = 100/1000;
+                end
+
+            case "U-eFh-N" % 5 + 1 par
+                auxind = auxind+1;
+                models{k2}.index = auxind;
+                l_Eg = models{k2}.l_Eg;
+                u_Eg = models{k2}.u_Eg;
+
+                l_n0 = models{k2}.l_n0;
+                u_n0 = models{k2}.u_n0;
+
+                l_fi = models{k2}.l_fi;
+                u_fi = models{k2}.u_fi;
+
+                models{k2}.nosc = length(l_fi);
+
+                l_Ei = models{k2}.l_Ei;
+                u_Ei = models{k2}.u_Ei;
+
+                l_Gi = models{k2}.l_Gi;
+                u_Gi = models{k2}.u_Gi;
+
+                l_D = models{k2}.l_D/1000;
+                u_D = models{k2}.u_D/1000;
+
+                l_ff_pvk = models{k2}.l_ff_pvk;
+                u_ff_pvk = models{k2}.u_ff_pvk;
+
+                n_mat = models{k2}.n_mat;
+                ff_mat = models{k2}.ff_mat;
+
+
+                lb = [lb l_Eg l_n0 l_fi l_Ei l_Gi l_ff_pvk l_D];
+                ub = [ub u_Eg u_n0 u_fi u_Ei u_Gi u_ff_pvk u_D];
                 isUnk = true;
                 if k2~=1 && k2~=n_layers
                     D(models{k2}.index) = 100/1000;
@@ -272,6 +326,22 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
                 if k2~=1 && k2~=n_layers
                     D(models{k2}.index) = 100/1000;
                 end
+
+            case "U-file"
+                auxind = auxind+1;
+                models{k2}.index = auxind;
+                nkdata = load(models{k2}.filename);
+                N(:,models{k2}.index) = interp1(nkdata.wl,nkdata.n,wl)+1i*interp1(nkdata.wl,nkdata.k,wl);
+                l_D = models{k2}.l_D/1000;
+                u_D = models{k2}.u_D/1000;
+
+                lb = [lb l_D];
+                ub = [ub u_D];
+                isUnk = true;
+                if k2~=1 && k2~=n_layers
+                    D(models{k2}.index) = 100/1000;
+                end
+
             case "U-lin-grad"
                 auxind = auxind+1;
                 models{k2}.index = auxind;
@@ -311,6 +381,7 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
 
     D = D(2:end);
     D_out = D;
+    
 
 
     if isUnk == true
@@ -398,7 +469,7 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
             switch models{ww}.type
                 case "U-Fh-N" % 5 + 1 par
                     a = models{ww}.nosc;
-                    models_out{ww}.type = "Fh-1";
+                    models_out{ww}.type = "Fh-N";
                     models_out{ww}.Eg =  xbest(aux_par+(1));
                     models_out{ww}.n0 =  xbest(aux_par+(2));
                     models_out{ww}.fi =  xbest(aux_par+(3:3+a-1));
@@ -409,6 +480,27 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
                     if ww~=1 && ww~=n_layers
                         models_out{ww}.D = xbest(aux_par+1)*1000;
                         D(models{ww}.index-1) = xbest(aux_par+1);
+                        aux_par = aux_par+1;
+                    end
+
+                case "U-eFh-N" % 5 + 1 par
+                    a = models{ww}.nosc;
+                    models_out{ww}.type = "eFh-N";
+                    models_out{ww}.Eg =  xbest(aux_par+(1));
+                    models_out{ww}.n0 =  xbest(aux_par+(2));
+                    models_out{ww}.fi =  xbest(aux_par+(3:3+a-1));
+                    models_out{ww}.Ei =  xbest(aux_par+(3+a:3+2*a-1));
+                    models_out{ww}.Gi =  xbest(aux_par+(3+2*a:3+3*a-1));
+                    n_pvk = f_nk_ForouhiBloomer(wl,xbest(aux_par+(1)),xbest(aux_par+(2)),xbest(aux_par+(3:3+a-1)),xbest(aux_par+(3+a:3+2*a-1)),xbest(aux_par+(3+2*a:3+3*a-1)));
+                    aux_par = aux_par+2+3*a;
+                    ff_pvk = xbest(aux_par+1);
+                    models_out{ww}.ff_pvk = xbest(aux_par+1);
+                    n_mat = models{ww}.n_mat;
+                    ff_mat = models{ww}.ff_mat;
+                    N(:,models{ww}.index) = f_nk_EMA(n_mat,n_pvk,1.0, ff_mat, ff_pvk ,2);
+                    if ww~=1 && ww~=n_layers
+                        models_out{ww}.D = xbest(aux_par+2)*1000;
+                        D(models{ww}.index-1) = xbest(aux_par+2);
                         aux_par = aux_par+1;
                     end
                 
@@ -445,6 +537,17 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
                         D(models{ww}.index-1) = xbest(aux_par+1);
                         aux_par = aux_par+1;
                     end
+
+                case "U-file"
+                    nkdata = load(models{ww}.filename);
+                    N(:,models{ww}.index) = interp1(nkdata.wl,nkdata.n,wl)+1i*interp1(nkdata.wl,nkdata.k,wl);
+    
+                    if ww~=1 && ww~=n_layers
+                        models_out{ww}.D = xbest(aux_par+1)*1000;
+                        D(models{ww}.index-1) = xbest(aux_par+1);
+                        aux_par = aux_par+1;
+                    end
+
                 case "U-lin-grad" % 2 + 1 par
                     models_out{ww}.type = "lin-grad";
                     models_out{ww}.n1 = xbest(aux_par+(1:1));

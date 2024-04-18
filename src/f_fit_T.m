@@ -44,6 +44,14 @@ function T = f_fit_T(N, D, lcoher, wl, theta, Te, models,  x)
                     D(models{ww}.index-1) = x(aux_par+1);
                     aux_par = aux_par+1;
                 end
+            case "U-file"
+                    nkdata = load(models{ww}.filename);
+                    N(:,models{ww}.index) = interp1(nkdata.wl,nkdata.n,wl)+1i*interp1(nkdata.wl,nkdata.k,wl);
+    
+                    if ww~=1 && ww~=n_layers
+                        D(models{ww}.index-1) = x(aux_par+1);
+                        aux_par = aux_par+1;
+                    end
             case "U-lin-grad" % 2 + 1 par
                 n1 = x(aux_par+(1:1));
                 n2 = x(aux_par+(2:2));
@@ -75,7 +83,11 @@ function T = f_fit_T(N, D, lcoher, wl, theta, Te, models,  x)
         
         Tt(:,k1) = 0.5*(Tt_S(:,k1) + Tt_P(:,k1));
 
-        
+
+        if size(Te) ~= size(Tt)
+            Te = Te';
+        end
+
         T = T + mean((Tt(:,k1)-Te(:,k1)).^2);
 
     end

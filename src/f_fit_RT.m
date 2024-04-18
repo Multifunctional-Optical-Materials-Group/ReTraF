@@ -23,6 +23,21 @@ function T = f_fit_RT(N, D, lcoher, wl, theta, Re, Te, rscale, models,  x)
                     D(models{ww}.index-1) = x(aux_par+1);
                     aux_par = aux_par+1;
                 end
+
+            case "U-eFh-N" % 5 + 1 par
+                a = models{ww}.nosc;
+                n_pvk = f_nk_ForouhiBloomer(wl,x(aux_par+(1)),x(aux_par+(2)),x(aux_par+(3:3+a-1)),x(aux_par+(3+a:3+2*a-1)),x(aux_par+(3+2*a:3+3*a-1)));
+                aux_par = aux_par+2+3*a;
+
+                ff_pvk = x(aux_par+1);
+                n_mat = models{ww}.n_mat;
+                ff_mat = models{ww}.ff_mat;
+                N(:,models{ww}.index) = f_nk_EMA(n_mat,n_pvk,1.0, ff_mat, ff_pvk ,2);
+                
+                if ww~=1 && ww~=n_layers
+                    D(models{ww}.index-1) = x(aux_par+2);
+                    aux_par = aux_par+1;
+                end
             
             case "U-Ch-n"   % 3 + 1 par
                 N(:,models{ww}.index) = Cauchy_n(wl,x(aux_par+(1:3)));
@@ -45,6 +60,14 @@ function T = f_fit_RT(N, D, lcoher, wl, theta, Re, Te, rscale, models,  x)
                     D(models{ww}.index-1) = x(aux_par+1);
                     aux_par = aux_par+1;
                 end
+            case "U-file"
+                    nkdata = load(models{ww}.filename);
+                    N(:,models{ww}.index) = interp1(nkdata.wl,nkdata.n,wl)+1i*interp1(nkdata.wl,nkdata.k,wl);
+    
+                    if ww~=1 && ww~=n_layers
+                        D(models{ww}.index-1) = x(aux_par+1);
+                        aux_par = aux_par+1;
+                    end
             case "U-lin-grad" % 2 + 1 par
                 n1 = x(aux_par+(1:1));
                 n2 = x(aux_par+(2:2));
@@ -69,6 +92,13 @@ function T = f_fit_RT(N, D, lcoher, wl, theta, Re, Te, rscale, models,  x)
     Rt_P=zeros(length(wl),length(theta));
     Rt=zeros(length(wl),length(theta));
     Tt=zeros(length(wl),length(theta));
+
+    if size(Re) ~= size(Rt)
+            Re = Re';
+    end
+    if size(Te) ~= size(Tt)
+            Te = Te';
+    end
     
     for k1=1:length(theta)
         for k2=1:length(wl)
@@ -80,10 +110,13 @@ function T = f_fit_RT(N, D, lcoher, wl, theta, Re, Te, rscale, models,  x)
         Rt(:,k1) = 0.5*(Rt_S(:,k1) + Rt_P(:,k1));
         Tt(:,k1) = 0.5*(Tt_S(:,k1) + Tt_P(:,k1));
 
-        
 
-        T = T + mean(rscale^2*(Rt(:,k1)-Re(:,k1)).^2);
-        T = T + mean((Tt(:,k1)-Te(:,k1)).^2);
+        At = 1-Tt(:,k1)-Rt(:,k1);
+        Ae = 1-Te(:,k1)-Re(:,k1);
+
+        T = T + 1*mean(rscale^2*(Rt(:,k1)-Re(:,k1)).^2);
+        T = T + 1*mean((Tt(:,k1)-Te(:,k1)).^2);
+        T = T + 1*mean((At-Ae).^2);
 
     end
     

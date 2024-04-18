@@ -35,7 +35,7 @@ function [Rt,Rt_S,Rt_P] = f_plot_R(N, D, lcoher, wl, theta, Rexp,onlyplot)
     for jj=1:length(theta)
         subplot(length(theta),1,jj)
         if onlyplot == false
-            plot(wl,Rexp(jj,:),'LineWidth',1.5,'color','k','LineStyle','-')
+            plot(wl,Rexp(:,jj),'LineWidth',1.5,'color','k','LineStyle','-')
             hold on
         end
         plot(wl,Rt(:,jj),'LineWidth',1.5,'color','r','LineStyle','--')

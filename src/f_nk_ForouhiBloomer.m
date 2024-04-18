@@ -18,6 +18,7 @@ function [n] = f_nk_ForouhiBloomer(wl, Eg, n0, fi, Ei, Gi)
 % Ei = [1.597 2.418 3.392];
 % Gi = [0.080 0.387 0.448];
 
+% fi = fi/100;
 E  = 1240./wl;
 N  = length(fi);
 Bi = fi./Gi.*(Gi.^2-(Ei-Eg).^2);

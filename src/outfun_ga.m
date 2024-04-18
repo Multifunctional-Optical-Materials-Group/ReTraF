@@ -35,6 +35,21 @@ function [state,options,optchanged] = outfun_ga(options,state,flag,models,N, D, 
                             D_out(models{ww}.index-1) = xbest(aux_par+1);
                             aux_par = aux_par+1;
                         end
+                    case "U-eFh-N" % 5 + 1 par
+                        a = models{ww}.nosc;
+                        n_pvk = f_nk_ForouhiBloomer(wl,xbest(aux_par+(1)),xbest(aux_par+(2)),xbest(aux_par+(3:3+a-1)),xbest(aux_par+(3+a:3+2*a-1)),xbest(aux_par+(3+2*a:3+3*a-1)));
+                        aux_par = aux_par+2+3*a;
+        
+                        ff_pvk = xbest(aux_par+1);
+                        n_mat = models{ww}.n_mat;
+                        ff_mat = models{ww}.ff_mat;
+                        N_out(:,models{ww}.index) = f_nk_EMA(n_mat,n_pvk,1.0, ff_mat, ff_pvk ,2);
+                        
+                        if ww~=1 && ww~=n_layers
+                            D_out(models{ww}.index-1) = xbest(aux_par+2);
+                            aux_par = aux_par+1;
+                        end
+
                     case "U-Ch-n"   % 3 + 1 par
                         models_out{ww}.type = "Ch-n";
                         models_out{ww}.A = xbest(aux_par+(1:3));
@@ -68,6 +83,16 @@ function [state,options,optchanged] = outfun_ga(options,state,flag,models,N, D, 
                             D_out(models{ww}.index-1) = xbest(aux_par+1);
                             aux_par = aux_par+1;
                         end
+                     case "U-file"
+                        models_out{ww}.type = "file";
+                        nkdata = load(models{ww}.filename);
+                        N(:,models{ww}.index) = interp1(nkdata.wl,nkdata.n,wl)+1i*interp1(nkdata.wl,nkdata.k,wl);
+        
+                        if ww~=1 && ww~=n_layers
+                            D_out(models{ww}.index-1) = xbest(aux_par+1);
+                            models_out{ww}.D = xbest(aux_par+1)*1000;
+                            aux_par = aux_par+1;
+                        end
                     case "U-lin-grad" % 2 + 1 par
                         models_out{ww}.type = "lin-grad";
                         models_out{ww}.n1 = xbest(aux_par+(1:1));
@@ -81,7 +106,7 @@ function [state,options,optchanged] = outfun_ga(options,state,flag,models,N, D, 
                             D_out(models{ww}.index+jj-2) = models_out{ww}.D/nlayers;
                         end
                         aux_par = aux_par+3;
-                    end
+                end
              end
     
              

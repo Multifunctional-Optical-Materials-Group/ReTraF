@@ -31,6 +31,7 @@
 
 function [Rs, Rp, Ts, Tp, Fs, Fp, Pabs_s, Pabs_p] = RTF_Abeles_F(n00,d00,wl,ang_inc,z,lcoher,pp)
 
+
     %Averages R, T and E with phase increments wwhen d>lcoher
         phyt = 0;
         auxi = find((d00-lcoher)>0);
@@ -109,6 +110,7 @@ function [Rs, Rp, Ts, Tp, Fs, Fp, Pabs_s, Pabs_p] = RTF_Abeles_F(n00,d00,wl,ang_
             
             if ismember(k1-1,auxi+1)
                 phy = phyt(k2);
+%                 phy = rand(1,1)*2*pi;
             else 
                 phy = 0;
             end
