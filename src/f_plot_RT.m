@@ -42,7 +42,7 @@ function [Rt,Rt_S,Rt_P,Tt,Tt_S,Tt_P] = f_plot_RT(N, D, lcoher, wl, theta,Rexp,Te
         
 %         T = T + 0*mean(rscale^2*(Rt(:,k1)-Re(:,k1)).^2);
 %         T = T + 0*mean((Tt(:,k1)-Te(:,k1)).^2);
-        T = T + 1*mean(((1-Tt(:,k1)-Rt(:,k1))-(1-Te(:,k1)-Re(:,k1))).^2);
+%        T = T + 1*mean(((1-Tt(:,k1)-Rt(:,k1))-(1-Te(:,k1)-Re(:,k1))).^2);
 
     end
 
