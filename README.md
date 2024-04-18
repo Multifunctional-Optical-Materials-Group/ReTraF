@@ -65,7 +65,7 @@ All the required information of each layer is stored inside a ```model``` struct
     - Load from .mat file
       - ```model.type = "file"```
       - ```model.filename``` full path to the nk .mat file. The variables inside this file must be:
-        - ```wl_exp``` wavelenth in nm
+        - ```wl``` wavelenth in nm
         - ```n``` real part of the refractive index
         - ```k``` imaginary part of the refractive index
   - Unknown layers
@@ -110,6 +110,14 @@ All the required information of each layer is stored inside a ```model``` struct
         - ```model.u_n``` upper bound for the refractive index
         - ```model.l_D```  lower bound for the layer thickness in nm
         - ```model.u_D```  upper bound for the layer thickness in nn
+      - Load from .mat file
+        - ```model.type = "U-file"```
+        - ```model.l_D```  lower bound for the layer thickness in nm
+        - ```model.u_D```  upper bound for the layer thickness in nn
+        - ```model.filename``` full path to the nk .mat file. The variables inside this file must be:
+        - ```wl``` wavelenth in nm
+        - ```n``` real part of the refractive index
+        - ```k``` imaginary part of the refractive index
 
 Once all the models are properly defined, they must be packed in a cell array: ```models = {model_1 model_2 model_3 model_4}```.
 
