@@ -36,8 +36,8 @@ Reflectance and transmittance variables are matrices of dimension ```(m x n)``` 
 ### Models struct:
 All the required information of each layer is stored inside a ```model``` struct. We make a distinction between known layers and unknown layers.
   - Known layers:
-    - Forouhi-Bloomer model (max. 4 oscillators):
-      - ```model.type = "Fh-1"``` or ```model.type = "Fh-2"``` or ```model.type = "Fh-3"``` or ```model.type = "Fh-4"```
+    - Forouhi-Bloomer model :
+      - ```model.type = "Fh-N"```
       - ```model.Eg``` Bandgap in Ev
       - ```model.n0``` low frequency refractive index
       - ```model.fi``` fi parameter (length should be equal to the number of oscillators)
@@ -69,8 +69,8 @@ All the required information of each layer is stored inside a ```model``` struct
         - ```n``` real part of the refractive index
         - ```k``` imaginary part of the refractive index
   - Unknown layers
-      - Forouhi-Bloomer model (max. 4 oscillators):
-        - ```model.type = "U-Fh-1"``` or ```model.type = "U-Fh-2"``` or ```model.type = "U-Fh-3"``` or ```model.type = "U-Fh-4"```
+      - Forouhi-Bloomer model :
+        - ```model.type = "U-Fh-N"```
         - ```model.l_Eg``` lower bound for the bandgap in Ev
         - ```model.u_Eg``` upper bound for the bandgap in Ev
         - ```model.l_n0``` lower bound for the low frequency refractive index
