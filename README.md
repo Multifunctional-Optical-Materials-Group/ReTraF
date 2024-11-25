@@ -92,7 +92,7 @@ All the required information of each layer is stored inside a ```model``` struct
         - ```model.l_D```  lower bound for the layer thickness in nm
         - ```model.u_D```  upper bound for the layer thickness in nm
       - Lorentz model :
-        - ```model.type = "Lnz-N"```
+        - ```model.type = "U-Lnz-N"```
         - ```model.l_n0``` lower bound for the low frequency refractive index
         - ```model.u_n0``` upper bound for the low frequency refractive index
         - ```model.l_E0``` lower bound for the E0 parameter (length should be equal to the number of oscillators)
