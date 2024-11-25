@@ -9,7 +9,7 @@ Add ```src``` folder to Matlab path.
 - Real Cauchy Model: $n(\lambda) = A_{1} + 10^{4}\frac{A_{2}}{\lambda^2} + 10^{9}\frac{A_{3}}{\lambda^4}$
 - Imaginary Cauchy Model: $n(\lambda) = A_{1} + 10^{4}\frac{A_{2}}{\lambda^2} + 10^{9}\frac{A_{3}}{\lambda^4} + A_{4}\cdot i + 10^{4}\frac{A_{5}}{\lambda^2}\cdot i + 10^{9}\frac{A_{6}}{\lambda^4}\cdot i$
 - Forouhi-Bloomer model: $n(\lambda) = n_0 + \sum_{j} \frac{B_j\cdot (E(\lambda)-E_j) + C_j}{(E(\lambda)-E_j)^2 + G_j^2} + \frac{f_j\cdot (E(\lambda)-E_g)^2\cdot \delta(E(\lambda)-E_g)}{(E(\lambda)-E_j)^2+G_j^2}\cdot i$, being $\delta$ the step function.
-- Lorentz model: $n(\lambda) = \sqrt{n_0 + \sum_{j} \frac{E_p^2}{E_0^2-(E(\lambda)-(E(\lambda)^2-i\cdot g\cdot E(\lambda)^2} }$, being $\delta$ the step function.
+- Lorentz model: $n(\lambda) = \sqrt{n_0 + \sum_{j} \frac{E_{p,j}^2}{E_{0,j}^2-E(\lambda)^2-i\cdot g_j\cdot E(\lambda)^2} }$, being $\delta$ the step function.
 - Linear gradient model: $n_j(\lambda)= \frac{n_2-n_1}{N-1}\cdot j$, being $N$ the number of sublayers.
 
 ## **Usage**:
