@@ -45,7 +45,7 @@ All the required information of each layer is stored inside a ```model``` struct
       - ```model.Ei``` Ei parameter (length should be equal to the number of oscillators)
       - ```model.Gi``` Gi parameter (length should be equal to the number of oscillators)
       - ```model.D``` layer thickness in nm
-   - Lorentz model :
+    - Lorentz model :
       - ```model.type = "Lnz-N"```
       - ```model.n0``` low frequency refractive index
       - ```model.E0``` E0 parameter (length should be equal to the number of oscillators)
@@ -91,6 +91,18 @@ All the required information of each layer is stored inside a ```model``` struct
         - ```model.u_Gi``` upper bound for the Gi parameter (length should be equal to the number of oscillators)
         - ```model.l_D```  lower bound for the layer thickness in nm
         - ```model.u_D```  upper bound for the layer thickness in nm
+      - Lorentz model :
+        - ```model.type = "Lnz-N"```
+        - ```model.l_n0``` lower bound for the low frequency refractive index
+        - ```model.u_n0``` upper bound for the low frequency refractive index
+        - ```model.l_E0``` lower bound for the E0 parameter (length should be equal to the number of oscillators)
+        - ```model.u_E0``` upper bound for the E0 parameter (length should be equal to the number of oscillators)
+        - ```model.l_Ep``` lower bound for the Ep parameter (length should be equal to the number of oscillators)
+        - ```model.u_Ep``` upper bound for the Ep parameter (length should be equal to the number of oscillators)
+        - ```model.l_g``` lower bound for the g parameter (length should be equal to the number of oscillators)
+        - ```model.u_g``` upper bound for the g parameter (length should be equal to the number of oscillators)
+        - ```model.l_D``` lower bound for the layer thickness in nm
+        - ```model.u_D``` upper bound for the layer thickness in nm
       - Real Cauchy model
         - ```model.type = "U-Ch-n"```
         - ```model.l_A```  lower bound for the vector with real Cauchy parameters ```[ A1 , A2 , A3 ]```
