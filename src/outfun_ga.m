@@ -7,7 +7,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [state,options,optchanged] = outfun_ga(options,state,flag,models,N, D, wl, theta,Rexp,Texp,fit_type,foptions)
+function [state,options,optchanged] = outfun_ga(options,state,flag,models,N, D,s00, wl, theta,Rexp,Texp,fit_type,foptions)
      optchanged = false; 
      switch flag
          case 'iter'
@@ -25,8 +25,38 @@ function [state,options,optchanged] = outfun_ga(options,state,flag,models,N, D, 
              n_layers = length(models);
              onlyplot = false;
              isUnk = true;
+
+             if isempty(s00) == false
+                s00 = xbest(end-length(s00)+1:end);
+             end
+             
              for ww=1:length(models)
                 switch models{ww}.type
+
+                    case "U-mix3"
+                        nkdata = load(models{ww}.filename1);
+                        n1 = interp1(nkdata.wl,nkdata.n,wl)+1i*interp1(nkdata.wl,nkdata.k,wl);
+            
+                        nkdata = load(models{ww}.filename2);
+                        n2 = interp1(nkdata.wl,nkdata.n,wl)+1i*interp1(nkdata.wl,nkdata.k,wl);
+            
+                        nkdata = load(models{ww}.filename3);
+                        n3 = interp1(nkdata.wl,nkdata.n,wl)+1i*interp1(nkdata.wl,nkdata.k,wl);
+    
+                        models{ww}.type = "mix3";
+                        models{ww}.ff1 = xbest(aux_par+1);
+                        aux_par = aux_par+1;
+                        models{ww}.ff2 = xbest(aux_par+1);
+                        aux_par = aux_par+1;
+    
+                        N_out(:,models{ww}.index) = f_nk_EMA(n1,n2,n3, models{ww}.ff1, (1-models{ww}.ff1)*models{ww}.ff2 ,2);
+        
+                        if ww~=1 && ww~=n_layers
+                            D_out(models{ww}.index-1) = xbest(aux_par+1);
+                            aux_par = aux_par+1;
+                        end
+
+
                     case "U-Fh-N" % 5 + 1 par
                         a = models{ww}.nosc;
                         N_out(:,models{ww}.index) = f_nk_ForouhiBloomer(wl,xbest(aux_par+(1)),xbest(aux_par+(2)),xbest(aux_par+(3:3+a-1)),xbest(aux_par+(3+a:3+2*a-1)),xbest(aux_par+(3+2*a:3+3*a-1)));
@@ -35,6 +65,16 @@ function [state,options,optchanged] = outfun_ga(options,state,flag,models,N, D, 
                             D_out(models{ww}.index-1) = xbest(aux_par+1);
                             aux_par = aux_par+1;
                         end
+
+                    case "U-Lnz-N" % 5 + 1 par
+                        a = models{ww}.nosc;
+                        N_out(:,models{ww}.index) = f_nk_lorentz(wl,xbest(aux_par+(1)),xbest(aux_par+(2:2+a-1)),xbest(aux_par+(2+a:2+2*a-1)),xbest(aux_par+(2+2*a:2+3*a-1)));
+                        aux_par = aux_par+1+3*a;
+                        if ww~=1 && ww~=n_layers
+                            D_out(models{ww}.index-1) = xbest(aux_par+1);
+                            aux_par = aux_par+1;
+                        end
+
                     case "U-eFh-N" % 5 + 1 par
                         a = models{ww}.nosc;
                         n_pvk = f_nk_ForouhiBloomer(wl,xbest(aux_par+(1)),xbest(aux_par+(2)),xbest(aux_par+(3:3+a-1)),xbest(aux_par+(3+a:3+2*a-1)),xbest(aux_par+(3+2*a:3+3*a-1)));
@@ -122,15 +162,15 @@ function [state,options,optchanged] = outfun_ga(options,state,flag,models,N, D, 
                     if onlyplot == true
                         error("Exp. data is needed for scattering correction")
                     end
-                    [~, ~, ~, ~, ~, ~] = f_plot_RT_scatt(N_out, D_out, lcoher, wl, theta.values(theta.index), Rexp, Texp, alpha);
+                    [~, ~, ~, ~, ~, ~] = f_plot_RT_scatt(N_out, D_out,s00, lcoher, wl, theta.values(theta.index), Rexp, Texp, alpha);
                 else
-                    [~, ~, ~, ~, ~, ~] = f_plot_RT(N_out, D_out, lcoher, wl, theta.values(theta.index), Rexp, Texp, onlyplot);
+                    [~, ~, ~, ~, ~, ~] = f_plot_RT(N_out, D_out,s00, lcoher, wl, theta.values(theta.index), Rexp, Texp, onlyplot);
 
                 end
             elseif fit_type =="R"
-                [~, ~, ~] = f_plot_R(N_out, D_out, lcoher, wl, theta.values(theta.index),Rexp, onlyplot);
+                [~, ~, ~] = f_plot_R(N_out, D_out,s00, lcoher, wl, theta.values(theta.index),Rexp, onlyplot);
             elseif fit_type =="T"
-                [~, ~, ~] = f_plot_T(N_out, D_out, lcoher, wl, theta.values(theta.index),Texp, onlyplot);
+                [~, ~, ~] = f_plot_T(N_out, D_out,s00, lcoher, wl, theta.values(theta.index),Texp, onlyplot);
             
             end
 

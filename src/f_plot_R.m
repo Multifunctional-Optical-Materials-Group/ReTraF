@@ -8,7 +8,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-function [Rt,Rt_S,Rt_P] = f_plot_R(N, D, lcoher, wl, theta, Rexp,onlyplot)
+function [Rt,Rt_S,Rt_P] = f_plot_R(N, D,s00, lcoher, wl, theta, Rexp,onlyplot)
     
 
     Rt_S=zeros(length(wl),length(theta));
@@ -18,7 +18,7 @@ function [Rt,Rt_S,Rt_P] = f_plot_R(N, D, lcoher, wl, theta, Rexp,onlyplot)
     for k1=1:length(theta)
         for k2=1:length(wl)
             
-            [Rt_S(k2,k1), Rt_P(k2,k1), ~, ~, ~, ~, ~, ~] = RTF_Abeles_F(N(k2,:), D', wl(k2),theta(k1)*pi/180,[],lcoher,30);
+            [Rt_S(k2,k1), Rt_P(k2,k1), ~, ~, ~, ~, ~, ~] = RTF_Abeles_F(N(k2,:), D',s00, wl(k2),theta(k1)*pi/180,[],lcoher,30);
             
         end
         

@@ -8,7 +8,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-function [Rt,Rt_S,Rt_P,Tt,Tt_S,Tt_P] = f_plot_RT(N, D, lcoher, wl, theta,Rexp,Texp,onlyplot)
+function [Rt,Rt_S,Rt_P,Tt,Tt_S,Tt_P] = f_plot_RT(N, D,s00, lcoher, wl, theta,Rexp,Texp,onlyplot)
     
     Re = Rexp;
     Te = Texp;
@@ -26,7 +26,7 @@ function [Rt,Rt_S,Rt_P,Tt,Tt_S,Tt_P] = f_plot_RT(N, D, lcoher, wl, theta,Rexp,Te
     for k1=1:length(theta)
         for k2=1:length(wl)
             
-            [Rt_S(k2,k1), Rt_P(k2,k1), Tt_S(k2,k1), Tt_P(k2,k1), ~, ~, ~, ~] = RTF_Abeles_F(N(k2,:), D', wl(k2),theta(k1)*pi/180,[],lcoher,30);
+            [Rt_S(k2,k1), Rt_P(k2,k1), Tt_S(k2,k1), Tt_P(k2,k1), ~, ~, ~, ~] = RTF_Abeles_F(N(k2,:), D',s00, wl(k2),theta(k1)*pi/180,[],lcoher,30);
             
         end
         
@@ -42,7 +42,7 @@ function [Rt,Rt_S,Rt_P,Tt,Tt_S,Tt_P] = f_plot_RT(N, D, lcoher, wl, theta,Rexp,Te
         
 %         T = T + 0*mean(rscale^2*(Rt(:,k1)-Re(:,k1)).^2);
 %         T = T + 0*mean((Tt(:,k1)-Te(:,k1)).^2);
-%        T = T + 1*mean(((1-Tt(:,k1)-Rt(:,k1))-(1-Te(:,k1)-Re(:,k1))).^2);
+        T = T + 1*mean(((1-Tt(:,k1)-Rt(:,k1))-(1-Te(:,k1)-Re(:,k1))).^2);
 
     end
 

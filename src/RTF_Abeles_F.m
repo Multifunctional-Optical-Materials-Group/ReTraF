@@ -29,8 +29,9 @@
     
 % output:
 
-function [Rs, Rp, Ts, Tp, Fs, Fp, Pabs_s, Pabs_p] = RTF_Abeles_F(n00,d00,wl,ang_inc,z,lcoher,pp)
+function [Rs, Rp, Ts, Tp, Fs, Fp, Pabs_s, Pabs_p] = RTF_Abeles_F(n00,d00,s00,wl,ang_inc,z,lcoher,pp)
 
+   
 
     %Averages R, T and E with phase increments wwhen d>lcoher
         phyt = 0;
@@ -56,6 +57,10 @@ function [Rs, Rp, Ts, Tp, Fs, Fp, Pabs_s, Pabs_p] = RTF_Abeles_F(n00,d00,wl,ang_
     d = [0 d00  0];
     n = [n00];
     nn = length(n);
+
+    if isempty(s00) == true
+        s00 = zeros(length(d)-1);
+    end
     
     if(length(d00)~=(length(n00)-2))
     
@@ -97,11 +102,17 @@ function [Rs, Rp, Ts, Tp, Fs, Fp, Pabs_s, Pabs_p] = RTF_Abeles_F(n00,d00,wl,ang_
 
             % fresnel coeff capa (k1-1) - (k1)
             
-            rs(k1-1) = (n(k1-1).*c(k1-1) - n(k1)*c(k1))   /  (n(k1-1).*c(k1-1) + n(k1)*c(k1)) ;
-            rp(k1-1) = (n(k1-1).*c(k1)   - n(k1)*c(k1-1)) /  (n(k1-1).*c(k1)   + n(k1)*c(k1-1));
+%             rs(k1-1) = (n(k1-1).*c(k1-1) - n(k1)*c(k1))   /  (n(k1-1).*c(k1-1) + n(k1)*c(k1)) ;
+%             rp(k1-1) = (n(k1-1).*c(k1)   - n(k1)*c(k1-1)) /  (n(k1-1).*c(k1)   + n(k1)*c(k1-1));
+% 
+%             ts(k1-1) = 2*n(k1-1)*c(k1-1) / (n(k1-1)*c(k1-1)+n(k1)*c(k1));
+%             tp(k1-1) = 2*n(k1-1)*c(k1-1) / (n(k1-1)*c(k1)+n(k1)*c(k1-1));   
 
-            ts(k1-1) = 2*n(k1-1)*c(k1-1) / (n(k1-1)*c(k1-1)+n(k1)*c(k1));
-            tp(k1-1) = 2*n(k1-1)*c(k1-1) / (n(k1-1)*c(k1)+n(k1)*c(k1-1));    
+            rs(k1-1) = (n(k1-1).*c(k1-1) - n(k1)*c(k1))   /  (n(k1-1).*c(k1-1) + n(k1)*c(k1)) *(exp(-2*(2*pi*s00(k1-1)/wl)^2*abs(n(k1-1))^2)) ;
+            rp(k1-1) = (n(k1-1).*c(k1)   - n(k1)*c(k1-1)) /  (n(k1-1).*c(k1)   + n(k1)*c(k1-1)) *(exp(-2*(2*pi*s00(k1-1)/wl)^2*abs(n(k1-1))^2));
+
+            ts(k1-1) = 2*n(k1-1)*c(k1-1) / (n(k1-1)*c(k1-1)+n(k1)*c(k1)) *(exp(-(2*pi*s00(k1-1)/wl)^2*abs(n(k1)-n(k1-1))^2/2));
+            tp(k1-1) = 2*n(k1-1)*c(k1-1) / (n(k1-1)*c(k1)+n(k1)*c(k1-1)) *(exp(-(2*pi*s00(k1-1)/wl)^2*abs(n(k1)-n(k1-1))^2/2));    
 
                  
             % change of phase       

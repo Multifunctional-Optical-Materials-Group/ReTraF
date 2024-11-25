@@ -8,7 +8,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-function [Tt,Tt_S,Tt_P] = f_plot_T(N, D, lcoher, wl, theta,Texp,onlyplot)
+function [Tt,Tt_S,Tt_P] = f_plot_T(N, D,s00, lcoher, wl, theta,Texp,onlyplot)
     
     Tt_S=zeros(length(wl),length(theta));
     Tt_P=zeros(length(wl),length(theta));
@@ -17,7 +17,7 @@ function [Tt,Tt_S,Tt_P] = f_plot_T(N, D, lcoher, wl, theta,Texp,onlyplot)
     for k1=1:length(theta)
         for k2=1:length(wl)
             
-            [~, ~, Tt_S(k2,k1), Tt_P(k2,k1), ~, ~, ~, ~] = RTF_Abeles_F(N(k2,:), D, wl(k2),theta(k1)*pi/180,[],lcoher,30);
+            [~, ~, Tt_S(k2,k1), Tt_P(k2,k1), ~, ~, ~, ~] = RTF_Abeles_F(N(k2,:), D.',s00, wl(k2),theta(k1)*pi/180,[],lcoher,30);
             
         end
         

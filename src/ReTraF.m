@@ -28,6 +28,15 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
     foptions_out = foptions;
     onlyplot = false;
     fit_pts = false;
+    rscale = [];
+    
+    if isfield(foptions,"l_s00")
+        l_s00 = foptions.l_s00;
+        u_s00 = foptions.u_s00;
+        s00 = 0.5*(l_s00+u_s00);
+    else
+        s00 = [];
+    end
 
     if isempty(data_file)
         onlyplot = true;
@@ -93,7 +102,7 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
         end
     end
 
-    %foptions_out.rscale = rscale;
+    foptions_out.rscale = rscale;
 
     %% Refractive Index Models
     % Different refractive index models can be used for each unknown layer
@@ -164,7 +173,17 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
                 if k2~=1 && k2~=n_layers
                     D(models{k2}.index) = models{k2}.D/1000;
                 end
-
+             case "Lnz-N"  % 5 + 1 par
+                auxind = auxind+1;
+                models{k2}.index = auxind;
+                E0 = models{k2}.E0;
+                n0 = models{k2}.n0;
+                Ep = models{k2}.Ep;
+                g = models{k2}.g;
+                N(:,models{k2}.index) = f_nk_lorentz(wl, n0, E0, Ep, g);
+                if k2~=1 && k2~=n_layers
+                    D(models{k2}.index) = models{k2}.D/1000;
+                end
             case "eFh-N"  % 5 + 1 par
                 auxind = auxind+1;
                 models{k2}.index = auxind;
@@ -213,6 +232,26 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
                 if k2~=1 && k2~=n_layers
                     D(models{k2}.index) = models{k2}.D/1000;
                 end
+
+            case "mix3"
+                auxind = auxind+1;
+                models{k2}.index = auxind;
+
+                nkdata = load(models{k2}.filename1);
+                n1 = interp1(nkdata.wl,nkdata.n,wl)+1i*interp1(nkdata.wl,nkdata.k,wl);
+
+                nkdata = load(models{k2}.filename2);
+                n2 = interp1(nkdata.wl,nkdata.n,wl)+1i*interp1(nkdata.wl,nkdata.k,wl);
+
+                nkdata = load(models{k2}.filename3);
+                n3 = interp1(nkdata.wl,nkdata.n,wl)+1i*interp1(nkdata.wl,nkdata.k,wl);
+
+                N(:,models{k2}.index) = f_nk_EMA(n1,n2,n3, models{k2}.ff1, (1-models{k2}.ff1)*models{k2}.ff2 ,2);
+
+                if k2~=1 && k2~=n_layers
+                    D(models{k2}.index) = models{k2}.D/1000;
+                end
+
             case "U-Fh-N" % 5 + 1 par
                 auxind = auxind+1;
                 models{k2}.index = auxind;
@@ -238,6 +277,33 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
 
                 lb = [lb l_Eg l_n0 l_fi l_Ei l_Gi l_D];
                 ub = [ub u_Eg u_n0 u_fi u_Ei u_Gi u_D];
+                isUnk = true;
+                if k2~=1 && k2~=n_layers
+                    D(models{k2}.index) = 100/1000;
+                end
+
+                case "U-Lnz-N" % 5 + 1 par
+                auxind = auxind+1;
+                models{k2}.index = auxind;
+                l_E0 = models{k2}.l_E0;
+                u_E0 = models{k2}.u_E0;
+
+                l_n0 = models{k2}.l_n0;
+                u_n0 = models{k2}.u_n0;
+
+                l_Ep = models{k2}.l_Ep;
+                u_Ep = models{k2}.u_Ep;
+
+                models{k2}.nosc = length(l_Ep);
+
+                l_g = models{k2}.l_g;
+                u_g = models{k2}.u_g;
+
+                l_D = models{k2}.l_D/1000;
+                u_D = models{k2}.u_D/1000;
+
+                lb = [lb  l_n0 l_E0 l_Ep l_g l_D];
+                ub = [ub  u_n0 u_E0 u_Ep u_g u_D];
                 isUnk = true;
                 if k2~=1 && k2~=n_layers
                     D(models{k2}.index) = 100/1000;
@@ -342,6 +408,32 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
                     D(models{k2}.index) = 100/1000;
                 end
 
+            case "U-mix3"
+                auxind = auxind+1;
+                models{k2}.index = auxind;
+
+                nkdata = load(models{k2}.filename1);
+                n1 = interp1(nkdata.wl,nkdata.n,wl)+1i*interp1(nkdata.wl,nkdata.k,wl);
+
+                nkdata = load(models{k2}.filename2);
+                n2 = interp1(nkdata.wl,nkdata.n,wl)+1i*interp1(nkdata.wl,nkdata.k,wl);
+
+                nkdata = load(models{k2}.filename3);
+                n3 = interp1(nkdata.wl,nkdata.n,wl)+1i*interp1(nkdata.wl,nkdata.k,wl);
+
+                 N(:,models{k2}.index) = f_nk_EMA(n1,n2,n3, 0.5, 0.5 ,2);
+
+                l_D = models{k2}.l_D/1000;
+                u_D = models{k2}.u_D/1000;
+
+                lb = [lb models{k2}.l_ff1 models{k2}.l_ff2 l_D];
+                ub = [ub models{k2}.u_ff1 models{k2}.u_ff2 u_D];
+
+                isUnk = true;
+                if k2~=1 && k2~=n_layers
+                    D(models{k2}.index) = 100/1000;
+                end
+
             case "U-lin-grad"
                 auxind = auxind+1;
                 models{k2}.index = auxind;
@@ -387,11 +479,15 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
     if isUnk == true
         
         if foptions.method == "fmincon"
-            outF = @(x,optimValues,state)(outfun(x,optimValues,state,models,N, D, wl, theta,Rexp,Texp,fit_type,foptions));
+            outF = @(x,optimValues,state)(outfun(x,optimValues,state,models,N, D,s00,  wl, theta,Rexp,Texp,fit_type,foptions));
             options = optimoptions('fmincon','OutputFcn',outF,'Algorithm','interior-point',...
                                'Disp','iter-detailed',...
                                'UseParallel',foptions.parallel,...
                                'MaxIterations',foptions.itermax);
+            if isempty(s00) == false
+                lb = [lb l_s00];
+                ub = [ub u_s00];
+            end
             x0 = mean([lb;ub],1);
     
             if fit_type =="R&T"
@@ -410,23 +506,28 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
                         A = [];
                         b = [];
                     end
-                    [xbest, fbest, exitflag] = fmincon(@(x)f_fit_RT_scatt(N, D, lcoher, wl, theta.values(theta.index), Rexp, Texp, rscale, models,  x),x0 ,A, b, [], [], lb, ub,[],options);
+                    [xbest, fbest, exitflag] = fmincon(@(x)f_fit_RT_scatt(N, D,s00,  lcoher, wl, theta.values(theta.index), Rexp, Texp, rscale, models,  x),x0 ,A, b, [], [], lb, ub,[],options);
                 else
                     if fit_pts == true
                         for tt = 1:length(wl)
                             [N(tt,aux_pts), fbest, exitflag] = fmincon(@(x)f_fit_RT_pts(N(tt,:), D, lcoher, wl(tt), theta.values(theta.index), Rexp, Texp, rscale, models, aux_pts,  x),x0 ,[], [], [], [], lb, ub,[],options);
                         end
                     else
-                        [xbest, fbest, exitflag] = fmincon(@(x)f_fit_RT(N, D, lcoher, wl, theta.values(theta.index), Rexp, Texp, rscale, models,  x),x0 ,[], [], [], [], lb, ub,[],options);
+                        [xbest, fbest, exitflag] = fmincon(@(x)f_fit_RT(N, D,s00,  lcoher, wl, theta.values(theta.index), Rexp, Texp, rscale, models,  x),x0 ,[], [], [], [], lb, ub,[],options);
                     end
                 end
             elseif fit_type =="R"
-                [xbest, fbest, exitflag] = fmincon(@(x)f_fit_R(N, D, lcoher, wl, theta.values(theta.index), Rexp, models,  x),x0 ,[], [], [], [], lb, ub,[],options);
+                [xbest, fbest, exitflag] = fmincon(@(x)f_fit_R(N, D,s00,  lcoher, wl, theta.values(theta.index), Rexp, models,  x),x0 ,[], [], [], [], lb, ub,[],options);
             elseif fit_type =="T"
-                [xbest, fbest, exitflag] = fmincon(@(x)f_fit_T(N, D, lcoher, wl, theta.values(theta.index), Texp, models,  x),x0 ,[], [], [], [], lb, ub,[],options);
+                [xbest, fbest, exitflag] = fmincon(@(x)f_fit_T(N, D,s00,  lcoher, wl, theta.values(theta.index), Texp, models,  x),x0 ,[], [], [], [], lb, ub,[],options);
             end
         elseif foptions.method == "genetic"
-            outF = @(options,state,flag)(outfun_ga(options,state,flag,models,N, D, wl, theta,Rexp,Texp,fit_type,foptions));
+            if isempty(s00) == false
+                lb = [lb l_s00];
+                ub = [ub u_s00];
+            end
+
+            outF = @(options,state,flag)(outfun_ga(options,state,flag,models,N, D,s00,  wl, theta,Rexp,Texp,fit_type,foptions));
             options = gaoptimset('Display', 'off', 'OutputFcn',outF, ...
                               'Generations', foptions.itermax, ...
                               'TolFun', 1e-16, ...
@@ -445,14 +546,14 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
                         A(length(lb)-length(theta.values(theta.index))+zz+1,zz)=-1;
                     end
                     A=A';
-                    [xbest, fbest, exitflag] = ga(@(x)f_fit_RT_scatt(N, D, lcoher, wl, theta.values(theta.index), Rexp, Texp, rscale, models,  x), length(lb) ,A, b, [], [], lb, ub,[],options);
+                    [xbest, fbest, exitflag] = ga(@(x)f_fit_RT_scatt(N, D,s00,  lcoher, wl, theta.values(theta.index), Rexp, Texp, rscale, models,  x), length(lb) ,A, b, [], [], lb, ub,[],options);
                 else
-                    [xbest, fbest, exitflag] = ga(@(x)f_fit_RT(N, D, lcoher, wl, theta.values(theta.index), Rexp, Texp, rscale, models,  x),length(lb) ,[], [], [], [], lb, ub,[],options);
+                    [xbest, fbest, exitflag] = ga(@(x)f_fit_RT(N, D,s00,  lcoher, wl, theta.values(theta.index), Rexp, Texp, rscale, models,  x),length(lb) ,[], [], [], [], lb, ub,[],options);
                 end
             elseif fit_type =="R"
-                [xbest, fbest, exitflag] = ga(@(x)f_fit_R(N, D, lcoher, wl, theta.values(theta.index), Rexp, models,  x),length(lb) ,[], [], [], [], lb, ub,[],options);
+                [xbest, fbest, exitflag] = ga(@(x)f_fit_R(N, D,s00,  lcoher, wl, theta.values(theta.index), Rexp, models,  x),length(lb) ,[], [], [], [], lb, ub,[],options);
             elseif fit_type =="T"
-                [xbest, fbest, exitflag] = ga(@(x)f_fit_T(N, D, lcoher, wl, theta.values(theta.index), Texp, models,  x),length(lb) ,[], [], [], [], lb, ub,[],options);
+                [xbest, fbest, exitflag] = ga(@(x)f_fit_T(N, D,s00,  lcoher, wl, theta.values(theta.index), Texp, models,  x),length(lb) ,[], [], [], [], lb, ub,[],options);
             end
         end
     else
@@ -463,7 +564,10 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
 
     %% Recover models
     aux_par = 0;
-    
+    if isempty(s00) == false
+        s00 = xbest(end-length(s00)+1:end);
+        foptions_out.s00 = s00;
+    end
     if isUnk == true
         for ww=1:length(models)
             switch models{ww}.type
@@ -477,6 +581,20 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
                     models_out{ww}.Gi =  xbest(aux_par+(3+2*a:3+3*a-1));
                     N(:,models{ww}.index) = f_nk_ForouhiBloomer(wl,xbest(aux_par+(1)),xbest(aux_par+(2)),xbest(aux_par+(3:3+a-1)),xbest(aux_par+(3+a:3+2*a-1)),xbest(aux_par+(3+2*a:3+3*a-1)));
                     aux_par = aux_par+2+3*a;
+                    if ww~=1 && ww~=n_layers
+                        models_out{ww}.D = xbest(aux_par+1)*1000;
+                        D(models{ww}.index-1) = xbest(aux_par+1);
+                        aux_par = aux_par+1;
+                    end
+                case "U-Lnz-N" % 5 + 1 par
+                    a = models{ww}.nosc;
+                    models_out{ww}.type = "Fh-N";
+                    models_out{ww}.n0 =  xbest(aux_par+(1));
+                    models_out{ww}.E0 =  xbest(aux_par+(2:2+a-1));
+                    models_out{ww}.Ep =  xbest(aux_par+(2+a:2+2*a-1));
+                    models_out{ww}.g =  xbest(aux_par+(2+2*a:2+3*a-1));
+                    N(:,models{ww}.index) = f_nk_lorentz(wl,xbest(aux_par+(1)),xbest(aux_par+(2:2+a-1)),xbest(aux_par+(2+a:2+2*a-1)),xbest(aux_par+(2+2*a:2+3*a-1)));
+                    aux_par = aux_par+1+3*a;
                     if ww~=1 && ww~=n_layers
                         models_out{ww}.D = xbest(aux_par+1)*1000;
                         D(models{ww}.index-1) = xbest(aux_par+1);
@@ -548,6 +666,30 @@ function [models_out,N,D,Data_exp,Data_theor,xbest,foptions_out] = ReTraF(wl,the
                         aux_par = aux_par+1;
                     end
 
+                case "U-mix3"
+                    nkdata = load(models_out{ww}.filename1);
+                    n1 = interp1(nkdata.wl,nkdata.n,wl)+1i*interp1(nkdata.wl,nkdata.k,wl);
+        
+                    nkdata = load(models_out{ww}.filename2);
+                    n2 = interp1(nkdata.wl,nkdata.n,wl)+1i*interp1(nkdata.wl,nkdata.k,wl);
+        
+                    nkdata = load(models_out{ww}.filename3);
+                    n3 = interp1(nkdata.wl,nkdata.n,wl)+1i*interp1(nkdata.wl,nkdata.k,wl);
+
+                    models_out{ww}.type = "mix3";
+                    models_out{ww}.ff1 = xbest(aux_par+1);
+                    aux_par = aux_par+1;
+                    models_out{ww}.ff2 = xbest(aux_par+1);
+                    aux_par = aux_par+1;
+
+                    N(:,models{ww}.index) = f_nk_EMA(n1,n2,n3, models_out{ww}.ff1, (1-models_out{ww}.ff1)*models_out{ww}.ff2 ,2);
+    
+                    if ww~=1 && ww~=n_layers
+                        models_out{ww}.D = xbest(aux_par+1)*1000;
+                        D(models{ww}.index-1) = xbest(aux_par+1);
+                        aux_par = aux_par+1;
+                    end
+
                 case "U-lin-grad" % 2 + 1 par
                     models_out{ww}.type = "lin-grad";
                     models_out{ww}.n1 = xbest(aux_par+(1:1));
@@ -580,7 +722,7 @@ if fit_type =="R&T"
         if onlyplot == true
             error("Exp. data is needed for scattering correction")
         end
-        [Rt,Rt_S,Rt_P,Tt,Tt_S,Tt_P] = f_plot_RT_scatt(N, D, lcoher, wl, theta.values(theta.index), Rexp, Texp, alpha);
+        [Rt,Rt_S,Rt_P,Tt,Tt_S,Tt_P] = f_plot_RT_scatt(N, D,s00,  lcoher, wl, theta.values(theta.index), Rexp, Texp, alpha);
         Data_theor.Rt = Rt;
         Data_theor.Rt_S = Rt_S;
         Data_theor.Rt_P = Rt_P;
@@ -588,7 +730,7 @@ if fit_type =="R&T"
         Data_theor.Tt_S = Tt_S;
         Data_theor.Tt_P = Tt_P;
     else
-        [Rt,Rt_S,Rt_P,Tt,Tt_S,Tt_P] = f_plot_RT(N, D, lcoher, wl, theta.values(theta.index), Rexp, Texp, onlyplot);
+        [Rt,Rt_S,Rt_P,Tt,Tt_S,Tt_P] = f_plot_RT(N, D,s00,  lcoher, wl, theta.values(theta.index), Rexp, Texp, onlyplot);
         Data_theor.Rt = Rt;
         Data_theor.Rt_S = Rt_S;
         Data_theor.Rt_P = Rt_P;
@@ -597,12 +739,12 @@ if fit_type =="R&T"
         Data_theor.Tt_P = Tt_P;
     end
 elseif fit_type =="R"
-    [Rt,Rt_S,Rt_P] = f_plot_R(N, D, lcoher, wl, theta.values(theta.index),Rexp, onlyplot);
+    [Rt,Rt_S,Rt_P] = f_plot_R(N, D,s00,  lcoher, wl, theta.values(theta.index),Rexp, onlyplot);
     Data_theor.Rt = Rt;
     Data_theor.Rt_S = Rt_S;
     Data_theor.Rt_P = Rt_P;
 elseif fit_type =="T"
-    [Tt,Tt_S,Tt_P] = f_plot_T(N, D, lcoher, wl, theta.values(theta.index),Texp, onlyplot);
+    [Tt,Tt_S,Tt_P] = f_plot_T(N, D,s00,  lcoher, wl, theta.values(theta.index),Texp, onlyplot);
     Data_theor.Tt = Tt;
     Data_theor.Tt_S = Tt_S;
     Data_theor.Tt_P = Tt_P;
