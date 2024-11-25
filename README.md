@@ -48,8 +48,8 @@ All the required information of each layer is stored inside a ```model``` struct
    - Lorentz model :
       - ```model.type = "Lnz-N"```
       - ```model.n0``` low frequency refractive index
-      - ```model.E_0``` E_0 parameter (length should be equal to the number of oscillators)
-      - ```model.E_p``` E_p parameter (length should be equal to the number of oscillators)
+      - ```model.E0``` E0 parameter (length should be equal to the number of oscillators)
+      - ```model.Ep``` Ep parameter (length should be equal to the number of oscillators)
       - ```model.g``` g parameter (length should be equal to the number of oscillators)
       - ```model.D``` layer thickness in nm
     - Real Cauchy model
