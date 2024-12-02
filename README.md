@@ -1,5 +1,5 @@
 # ReTraF
-Reflectance and Transmittance fitter for arbitrary layered optical systems.
+Reflectance and Transmittance adn Ellipsometry fitter for arbitrary layered optical systems.
 
 ## **Instalation**:
 Add ```src``` folder to Matlab path.
