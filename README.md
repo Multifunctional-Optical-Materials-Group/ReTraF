@@ -25,8 +25,8 @@ ReTraF function call takes the following form:
   - ```RSample_P``` reflectance (in %) for P polarization.
   - ```TSample_S``` transmittance (in %) for S polarization.
   - ```TSample_S``` transmittance (in %) for P polarization.
-  - ```psi_exp``` $\psi$ experimental data (for ellipsometry).
-  - ```delta_exp``` $\Delta$ experimental data (for ellipsometry).
+  - ```psi_exp``` $\psi$ experimental data in degrees (for ellipsometry).
+  - ```delta_exp``` $\Delta$ experimental data in degrees (for ellipsometry).
 
 Reflectance and transmittance variables are matrices of dimension ```(m x n)``` where ```m``` is the number of measured wavelengths and ```n``` is the number of measurements for different incident angles.
 - ```wl``` wavelength (in nm) vector
